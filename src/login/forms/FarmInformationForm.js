@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { liste } from "../state, region, zipCode List/TunisiaList";
 import { SelectController } from "./elements/SelectController";
-export const FarmInformationForm = () => {
-  
-  
+export const FarmInformationForm = ({ content }) => {
   //tunisia states
   const Tunisie = [
     "TOZEUR",
@@ -49,7 +47,7 @@ export const FarmInformationForm = () => {
     "2261",
     "2262",
   ]);
-  
+
   //a function that takes the state select value and fill the region select with regions from the entred city
   const regionByState = (state) => {
     //reset region array
@@ -81,7 +79,7 @@ export const FarmInformationForm = () => {
     }
     setCodePostale(Array.from(ZipCodeList));
   };
-  //get selected state  
+  //get selected state
   const [state, setState] = useState("");
   const handleSelectedState = (newState) => {
     //fill in region array by the new state
@@ -89,38 +87,36 @@ export const FarmInformationForm = () => {
     //set the new state
     setState(newState);
   };
-//get selected region 
+  //get selected region
   const [selectedRegion, setSelectedRegion] = useState("DEGUECHE");
   const handleSelectedRegion = (newRegion) => {
     //fill in zipcode array by the new region
     setSelectedRegion(newRegion);
     //set the new region
-    zipcodeByRegion(newRegion)
+    zipcodeByRegion(newRegion);
   };
   //get selected zipcode
-  const [selectedZipCode,setSelectedZipCode] = useState("2214");
-  const handleSelectedZipCode = (newZipCode)=>{
+  const [selectedZipCode, setSelectedZipCode] = useState("2214");
+  const handleSelectedZipCode = (newZipCode) => {
     //set the new zipcode
-    setSelectedZipCode(newZipCode)
-  } 
+    setSelectedZipCode(newZipCode);
+  };
   return (
     <>
       <SelectController
-        labelname="state"
+        labelname={content.state}
         values={Tunisie}
-        
         OnChange={handleSelectedState}
       />
       <pre></pre>
       <SelectController
-        labelname="region"
+        labelname={content.region}
         values={region}
-        
         OnChange={handleSelectedRegion}
       />
       <pre></pre>
       <SelectController
-        labelname="zip code"
+        labelname={content.zipcode}
         values={CodePostale}
         OnChange={handleSelectedZipCode}
       />

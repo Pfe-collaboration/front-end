@@ -2,16 +2,17 @@ import React from "react";
 import { InputController } from "./elements/InputController";
 
 
-export const BasicForm = () => {
+export const BasicForm = ({content}) => {
   
   return (
     <>
-      <InputController name="first-name" placeholder="enter your first name" labelContent="first name"/>
-      <InputController name="last-name" placeholder="enter your last name" labelContent="Last name" />
-      <InputController name="email" placeholder="enter your Email" labelContent="Email" />
-      <InputController name="pwd" placeholder="enter your password" labelContent="Password" />
-      <InputController name="rpwd" placeholder="repeat your password" labelContent="Repeat Password" />
-      <InputController name="phone" placeholder="enter your phone number" labelContent="Phone Number " />
+    
+      <InputController name="first-name" placeholder={content.namePlaceholder} labelContent={content.firstName}/>
+      <InputController name="last-name" placeholder={content.lastNamePlaceholder} labelContent={content.lastName} />
+      <InputController name="email" placeholder={content.emailPlaceholder} labelContent={content.email} />
+      <InputController name="pwd" placeholder={content.pwdPlaceholder} labelContent={content.pwd} />
+      <InputController name="rpwd" placeholder={content.rpwdPlaceholder} labelContent={content.rpwd} />
+      <InputController name="phone" placeholder={content.phoneplaceholder} labelContent={content.phone} />
     </>
   );
 };

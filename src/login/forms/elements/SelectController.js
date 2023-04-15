@@ -5,7 +5,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import React, { useState } from "react";
 
-export const SelectController = ({ OnChange, labelname, values, }) => {
+export const SelectController = ({ OnChange, labelname, values }) => {
 
   //
   const [selectedItem, setSelectedItem] = useState("");

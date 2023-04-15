@@ -20,10 +20,10 @@ import {
 } from "react-hook-form";
 import { FarmInformationForm } from "./forms/FarmInformationForm";
 
-function getSteps() {
+function getSteps({content}) {
   return [
-    "Basic information",
-    "farm Information",
+    content.BasicInformation,
+    content.farmInformation,
     "Personal Information",
     "Payment",
   ];
@@ -135,12 +135,12 @@ const PaymentForm = () => {
   );
 };
 
-function getStepContent(step) {
+function getStepContent(step,{content}) {
   switch (step) {
     case 0:
-      return <BasicForm />;
+      return <BasicForm content={content} />;
     case 1:
-      return <FarmInformationForm />;
+      return <FarmInformationForm content={content} />;
     case 2:
       return <PersonalForm />;
     case 3:
@@ -150,7 +150,7 @@ function getStepContent(step) {
   }
 }
 
-const LinaerStepper = () => {
+const LinaerStepper = ({content}) => {
   const methods = useForm({
     defaultValues: {
       firstName: "",
@@ -169,7 +169,7 @@ const LinaerStepper = () => {
   });
   const [activeStep, setActiveStep] = useState(0);
   const [skippedSteps, setSkippedSteps] = useState([]);
-  const steps = getSteps();
+  const steps = getSteps({content});
 
   const isStepOptional = (step) => {
     return step === 1 || step === 2;
@@ -213,6 +213,7 @@ const LinaerStepper = () => {
   return (
     <div>
       <Stepper alternativeLabel activeStep={activeStep}>
+        
         {steps.map((step, index) => {
           const labelProps = {};
           const stepProps = {};
@@ -223,7 +224,7 @@ const LinaerStepper = () => {
                 align="center"
                 style={{ display: "block" }}
               >
-                optional
+                {content.optional}
               </Typography>
             );
           }
@@ -240,16 +241,16 @@ const LinaerStepper = () => {
 
       {activeStep === steps.length ? (
         <Typography variant="h3" align="center">
-          Thank You
+          {content.ThankYou}
         </Typography>
       ) : (
         <>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(handleNext)}>
-              {getStepContent(activeStep)}
+              {getStepContent(activeStep,{content})}
 
               <Button disabled={activeStep === 0} onClick={handleBack}>
-                back
+                {content.back}
               </Button>
               {isStepOptional(activeStep) && (
                 <Button
@@ -257,7 +258,7 @@ const LinaerStepper = () => {
                   color="primary"
                   onClick={handleSkip}
                 >
-                  skip
+                  {content.skip}
                 </Button>
               )}
               <Button
@@ -266,7 +267,7 @@ const LinaerStepper = () => {
                 // onClick={handleNext}
                 type="submit"
               >
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                {activeStep === steps.length - 1 ? content.Finish : content.Next}
               </Button>
             </form>
           </FormProvider>
