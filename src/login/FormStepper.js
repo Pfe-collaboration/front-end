@@ -181,7 +181,7 @@ const LinaerStepper = ({content}) => {
 
   const handleNext = (data) => {
     console.log(data);
-    if (activeStep == steps.length - 1) {
+    if (activeStep === steps.length - 1) {
       fetch("https://jsonplaceholder.typicode.com/comments")
         .then((data) => data.json())
         .then((res) => {

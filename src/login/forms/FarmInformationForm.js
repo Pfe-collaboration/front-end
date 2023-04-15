@@ -103,6 +103,7 @@ export const FarmInformationForm = ({ content }) => {
   };
   return (
     <>
+    {console.log(state+selectedRegion+selectedZipCode)}
       <SelectController
         labelname={content.state}
         values={Tunisie}

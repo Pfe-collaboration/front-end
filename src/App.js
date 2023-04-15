@@ -17,20 +17,20 @@ function App() {
   };
   const [content, setContent] = useState({});
   useEffect(() => {
-    if (language == "English") {
+    if (language === "English") {
       setContent(data.English);
       
-    } else if (language == "Français") {
+    } else if (language === "Français") {
       setContent(data.Français);
       
 
     }
-    else if (language == "Arabic") {
+    else if (language === "Arabic") {
       setContent(data.Arabic);
       
 
     }
-  });
+  },[language]);
   return (
     <>
       {/* <AnimationRevealPage>
