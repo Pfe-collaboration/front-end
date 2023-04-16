@@ -1,3 +1,8 @@
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import data from "./languages/Data.json";
@@ -10,10 +15,11 @@ import { useEffect, useState } from "react";
 //import tw from 'twin.macro'
 //const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block italic`;
 function App() {
+  const languages=["English","Français","العربية"]
   const [language, setLanguage] = useState("English");
   const hundleLanguage = (e) => {
-    const selectedLaguage = e.target.value;
-    setLanguage(selectedLaguage);
+    const selectedLanguage = e.target.value
+    setLanguage(selectedLanguage);
   };
   const [content, setContent] = useState({});
   useEffect(() => {
@@ -25,7 +31,7 @@ function App() {
       
 
     }
-    else if (language === "Arabic") {
+    else if (language === "العربية") {
       setContent(data.Arabic);
       
 
@@ -33,6 +39,24 @@ function App() {
   },[language]);
   return (
     <>
+    <pre>  </pre>
+    <Box>
+      <FormControl  fullWidth >
+        <InputLabel>{content.language}</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={language }
+          label={content.language}
+          onChange={hundleLanguage}
+          
+        >
+          {languages.map((value) => {
+            return <MenuItem value={value}>{value}</MenuItem>;
+          })}
+        </Select>
+      </FormControl>
+    </Box>
       {/* <AnimationRevealPage>
 
     <Footer/> 
@@ -45,15 +69,6 @@ function App() {
           </>
         }
       /> */}
-      <div>
-        <select onChange={hundleLanguage}>
-          <option value="English" selected>
-            English
-          </option>
-          <option value="Français">Français</option>
-          <option value="Arabic">العربية</option>
-        </select>
-      </div>
       <FarmerLogin content={content} />
     </>
   );

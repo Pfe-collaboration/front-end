@@ -108,18 +108,21 @@ export const FarmInformationForm = ({ content }) => {
         labelname={content.state}
         values={Tunisie}
         OnChange={handleSelectedState}
+        
       />
       <pre></pre>
       <SelectController
         labelname={content.region}
         values={region}
         OnChange={handleSelectedRegion}
+        
       />
       <pre></pre>
       <SelectController
         labelname={content.zipcode}
         values={CodePostale}
         OnChange={handleSelectedZipCode}
+        
       />
       <pre> </pre>
     </>

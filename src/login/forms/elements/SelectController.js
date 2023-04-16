@@ -19,7 +19,7 @@ export const SelectController = ({ OnChange, labelname, values }) => {
   };
   return (
     <Box>
-      <FormControl fullWidth>
+      <FormControl  fullWidth >
         <InputLabel>{labelname}</InputLabel>
         <Select
           labelId="demo-simple-select-label"
