@@ -6,11 +6,13 @@ export const InputController = ({name, labelContent,placeholder}) => {
     const { control } = useFormContext();
   return (
     <Controller
-        control={control}
-        name={name}
-        render={({ field }) => (
-          <TextField
-            id={name}
+    
+    control={control}
+    name={name}
+    render={({ field }) => (
+      <TextField
+      
+      id={name}
             label={labelContent}
             variant="outlined"
             placeholder={placeholder}

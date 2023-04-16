@@ -1,5 +1,6 @@
 {
     "English" : {
+        "nature":"English",
         "language":"Language",
         "BasicInformation":"Basic information",
         "farmInformation":"farm Information",
@@ -26,6 +27,7 @@
         "zipcode":"zip code"
     },
     "Français" : {
+        "nature":"French",
         "language":"Language",
         "BasicInformation":"Information de base",
         "farmInformation":"information sur la farme",
@@ -52,6 +54,7 @@
         "zipcode":"code postal"
     },
     "Arabic" : {
+        "nature":"Arabic",
         "language":"اللغة",
         "BasicInformation":"معلومات أساسية",
         "farmInformation":"معلومات حول الحقل",
