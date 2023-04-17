@@ -56,13 +56,14 @@ function App() {
               float: "left",
             }}
           >
-            {languages.map((language) => {
+            {languages.map((language,index) => {
               return (
-                <MenuItem value={language.value}>
+                <MenuItem
+                key={index}
+                value={language.value}>
                   <div style={{ float: "right" }}>{language.value} </div>
                   <img
                   alt="language flag"
-                    right
                     style={{
                       float: "left",
                       width: "30px",

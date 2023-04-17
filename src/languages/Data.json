@@ -24,9 +24,11 @@
         "phoneplaceholder":"enter your phone number",
         "state":"state",
         "region":"region",
-        "zipcode":"zip code"
+        "zipcode":"zip code",
+        "dir":"ltr"
     },
     "Français" : {
+
         "nature":"French",
         "language":"Language",
         "BasicInformation":"Information de base",
@@ -51,7 +53,8 @@
         "phoneplaceholder":"enter votre nuuméro de télèphone",
         "state":"ville",
         "region":"région",
-        "zipcode":"code postal"
+        "zipcode":"code postal",
+        "dir":"ltr"
     },
     "Arabic" : {
         "nature":"Arabic",
@@ -78,6 +81,7 @@
         "phoneplaceholder":"أدخل رقم الهاتف",
         "state":"الولاية",
         "region":"المعتمدية",
-        "zipcode":"الترقيم البريدي"
+        "zipcode":"الترقيم البريدي",
+        "dir":"rtl"
     }
 }
