@@ -1,31 +1,61 @@
-import React from "react";
+import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
+import InputAdornment from '@mui/material/InputAdornment';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
+export const InputController = ({
+  name,
+  labelContent,
+  placeholder,
+  OnChange,
+  InputType,
+}) => {
+  const { control } = useFormContext();
+  //function to change pwd visibility
+  const [showPassword , setShowPassword] = useState(InputType)
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  //text field function
+  function MyTextField() {
+    const [value, setValue] = useState("");
 
-export const InputController = ({name, labelContent,placeholder,Dir}) => {
-    const { control } = useFormContext();
-    
+    const handleChange = (event) => {
+      setValue(event.target.value);
+      OnChange(value);
+    };
+
     return (
-      
-    <Controller
-    control={control}
-    name={name}
-    render={({ field }) => (
-      <TextField
-      // inputProps={{
-        
-      //   style: { textAlign: "right" }
-      // }}
-      dir={Dir}
-      id={name}
-            label={labelContent}
-            variant="outlined"
-            placeholder={placeholder}
-            fullWidth
-            margin="normal"
-            {...field}
-          />
-        )}
-      />
-  )
-}
+      <>
+        <TextField
+          value={value}
+          onChange={handleChange}
+          id={name}
+          label={labelContent}
+          variant="outlined"
+          placeholder={placeholder}
+          fullWidth
+          margin="normal"
+          type={showPassword ? 'text' : 'password'}
+          
+          InputProps={{
+            endAdornment: (
+              InputType ?  <></> : <InputAdornment position="end">
+              <IconButton onClick={handleTogglePasswordVisibility}>
+                {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+              </IconButton>
+            </InputAdornment>
+              
+            ),
+          }}
+        />
+      </>
+    );
+  }
+  //
+  return (
+    <Controller control={control} name={name} render={() => MyTextField()} />
+  );
+};

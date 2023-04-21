@@ -105,7 +105,6 @@ export const FarmInformationForm = ({ content }) => {
     <>
     {console.log(state+selectedRegion+selectedZipCode)}
       <SelectController
-      dir={content.dir}
         labelname={content.state}
         values={Tunisie}
         OnChange={handleSelectedState}
@@ -125,6 +124,7 @@ export const FarmInformationForm = ({ content }) => {
         OnChange={handleSelectedZipCode}
         
       />
+      
       <pre> </pre>
     </>
   );

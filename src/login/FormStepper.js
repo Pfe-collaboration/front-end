@@ -49,6 +49,7 @@ const LinaerStepper = ({ content }) => {
       cardYear: "",
     },
   });
+  //if step is failed
   const [activeStep, setActiveStep] = useState(0);
   const [skippedSteps, setSkippedSteps] = useState([]);
   const steps = getSteps({ content });

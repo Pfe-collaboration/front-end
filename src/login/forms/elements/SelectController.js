@@ -29,8 +29,10 @@ export const SelectController = ({ OnChange, labelname, values }) => {
           onChange={handleChange}
           
         >
-          {values.map((value) => {
-            return <MenuItem value={value}>{value}</MenuItem>;
+          {values.map((value,index) => {
+            return <MenuItem 
+            key={index}
+            value={value}>{value}</MenuItem>;
           })}
         </Select>
       </FormControl>
