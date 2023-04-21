@@ -1,28 +1,28 @@
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import TextField from "@mui/material/TextField";
-import InputAdornment from '@mui/material/InputAdornment';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import IconButton from '@mui/material/IconButton';
+import InputAdornment from "@mui/material/InputAdornment";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import IconButton from "@mui/material/IconButton";
 export const InputController = ({
   name,
   labelContent,
   placeholder,
   OnChange,
   InputType,
+
 }) => {
   const { control } = useFormContext();
   //function to change pwd visibility
-  const [showPassword , setShowPassword] = useState(InputType)
+  const [showPassword, setShowPassword] = useState(InputType);
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
   //text field function
   function MyTextField() {
     const [value, setValue] = useState("");
-
-    const handleChange = (event) => {
+    const handleBlur = (event) => {
       setValue(event.target.value);
       OnChange(value);
     };
@@ -31,23 +31,24 @@ export const InputController = ({
       <>
         <TextField
           value={value}
-          onChange={handleChange}
+          onChange={(event) => setValue(event.target.value)}
+          onBlur={handleBlur}
           id={name}
           label={labelContent}
           variant="outlined"
           placeholder={placeholder}
           fullWidth
           margin="normal"
-          type={showPassword ? 'text' : 'password'}
-          
+          type={showPassword ? "text" : "password"}
           InputProps={{
-            endAdornment: (
-              InputType ?  <></> : <InputAdornment position="end">
-              <IconButton onClick={handleTogglePasswordVisibility}>
-                {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-              </IconButton>
-            </InputAdornment>
-              
+            endAdornment: InputType ? (
+              <></>
+            ) : (
+              <InputAdornment position="end">
+                <IconButton onClick={handleTogglePasswordVisibility}>
+                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                </IconButton>
+              </InputAdornment>
             ),
           }}
         />

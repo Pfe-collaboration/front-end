@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { InputController } from "./elements/InputController";
 
-export const BasicForm = ({ content }) => {
+export const BasicForm = ({ content, getInputs }) => {
   
+//send inputs back 
 
 
   //name const
@@ -145,6 +146,7 @@ function validInputs(){
         labelContent={content.firstName}
         //set it to true if it's not a password
         InputType={true}
+        
       />
       <InputController
         OnChange={LastNameVerify}

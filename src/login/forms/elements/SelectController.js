@@ -6,10 +6,9 @@ import Select from "@mui/material/Select";
 import React, { useState } from "react";
 
 export const SelectController = ({ OnChange, labelname, values }) => {
-
   //
   const [selectedItem, setSelectedItem] = useState("");
-  //get every select change and update the selected item const 
+  //get every select change and update the selected item const
   const handleChange = (event) => {
     const selectedItem = event.target.value;
     //send back the selected item to the parent component
@@ -19,20 +18,21 @@ export const SelectController = ({ OnChange, labelname, values }) => {
   };
   return (
     <Box>
-      <FormControl  fullWidth >
+      <FormControl fullWidth>
         <InputLabel>{labelname}</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={selectedItem }
+          value={selectedItem}
           label={labelname}
           onChange={handleChange}
-          
         >
-          {values.map((value,index) => {
-            return <MenuItem 
-            key={index}
-            value={value}>{value}</MenuItem>;
+          {values.map((value, index) => {
+            return (
+              <MenuItem key={index} value={value}>
+                {value}
+              </MenuItem>
+            );
           })}
         </Select>
       </FormControl>

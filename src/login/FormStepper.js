@@ -19,11 +19,15 @@ import { FarmInformationForm } from "./forms/FarmInformationForm";
 function getSteps({ content }) {
   return [content.BasicInformation, content.farmInformation];
 }
+//handle inputs
+function handleInputs(inputs){
+  console.log(inputs)
+}
 
 function getStepContent(step, { content }) {
   switch (step) {
     case 0:
-      return <BasicForm content={content} />;
+      return <BasicForm getInputs={handleInputs} content={content} />;
     case 1:
       return <FarmInformationForm content={content} />;
     default:
