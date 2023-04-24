@@ -10,16 +10,23 @@ import USA from "./languages/languages flags/USA.jpg";
 import FRNC from "./languages/languages flags/france.jpg";
 import SA from "./languages/languages flags/Tunisia.jpg";
 
-// import  Footer  from './footer/footer';
+import  Footer  from './footer/footer';
 // import Portfolio from './components/cards/PortfolioTwoCardsWithImage'
 // import AnimationRevealPage from './helpers/AnimationRevealPage';
-// import TabCardGrid from './components/cards/TabCardGrid';
+import TabCardGrid from './components/cards/TabCardGrid';
 import { FarmerLogin } from "./login/Farmer-login.js";
 import { useEffect, useState } from "react";
-//import tw from 'twin.macro'
-//const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block italic`;
+import tw from 'twin.macro'
+const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block italic`;
+
+
+//set the laguage 
+
+ //languages and their flags
+ 
+
+
 function App() {
-  //languages and their flags
   const languages = [{ value: "English", flag: USA }, {value:"Français",flag:FRNC}, {value:"العربية", flag:SA}];
   //language state
   const [language, setLanguage] = useState("English");
@@ -40,9 +47,10 @@ function App() {
       setContent(data.Arabic);
     }
   }, [language]);
+  
   return (
     <>
-      <pre> </pre>
+    <pre> </pre>
       <Box style={{ marginLeft: "10px" }}>
         <FormControl style={{ width: "150px" }}>
           <InputLabel>{content.language}</InputLabel>
@@ -78,6 +86,7 @@ function App() {
           </Select>
         </FormControl>
       </Box>
+      
       {/* <AnimationRevealPage>
 
     <Footer/> 
@@ -91,6 +100,14 @@ function App() {
         }
       /> */}
       <FarmerLogin content={content} />
+      <TabCardGrid
+        heading={
+          <>
+            Checkout our <HighlightedText>menu.</HighlightedText>
+          </>
+        }
+      />
+      <Footer/> 
     </>
   );
 }

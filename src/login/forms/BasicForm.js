@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { InputController } from "./elements/InputController";
 
-export const BasicForm = ({ content, getInputs }) => {
+export const BasicForm = ({ content, onClick, props }) => {
   
 //send inputs back 
 
 
-  //name const
-  const [name, setName] = useState(undefined);
   //name verification boolean
   const [validName, setValidName] = useState(false);
   //function that verifies name
@@ -17,12 +15,10 @@ export const BasicForm = ({ content, getInputs }) => {
       console.log("wrong name");
     } else {
       setValidName(true);
-      setName(name);
-      console.log(name);
+      inputs.name=name;
+      console.log(inputs.name);
     }
   }
-  //last name const
-  const [lastName, setLastName] = useState("");
   //last name verification boolean
   const [validLastName, setValidLastName] = useState(false);
   //function that verifies name
@@ -32,12 +28,10 @@ export const BasicForm = ({ content, getInputs }) => {
       console.log("wrong last name");
     } else {
       setValidLastName(true);
-      setLastName(Lastname);
+      inputs.lastName=Lastname;
       console.log(Lastname);
     }
   }
-  //email const
-  const [email, setEmail] = useState("");
 
   //email verification boolean
   const [ValidEmail, setValidEmail] = useState(false);
@@ -48,14 +42,12 @@ export const BasicForm = ({ content, getInputs }) => {
       console.log("email false");
     } else {
       setValidEmail(true);
-      setEmail(email);
+      inputs.email=email;
       console.log("email true");
     }
   }
 
-  //handle password
   //verify password strenght
-  const [password, setPassword] = useState('');
   const [strength, setStrength] = useState(false);
   function checkPasswordStrength(password) {
     let strength = '';
@@ -64,12 +56,12 @@ export const BasicForm = ({ content, getInputs }) => {
       setStrength(false)
     } else if (password.length >= 8 && password.match(/[a-z]/) && password.match(/[A-Z]/) && password.match(/[0-9]/) && password.match(/[^a-zA-Z0-9]/)) {
       strength = 'strong';
-      setPassword(password);
+     inputs.password=password;
       console.log(password)
       setStrength(true)
     } else {
       strength = 'medium';
-      setPassword(password);
+      inputs.password=password;
       console.log(password);
       setStrength(true)
     }
@@ -78,8 +70,8 @@ export const BasicForm = ({ content, getInputs }) => {
 
 //handle repeat pwd
 function rpwd(rpwd) {
-  if(rpwd===password){
-    console.log(password)
+  if(rpwd===inputs.password){
+    
     return true
   }
   else{
@@ -90,13 +82,12 @@ function rpwd(rpwd) {
 
 //handlephone number 
 const [validPhone,setValidPhone] = useState(false)
-const [phone,setPhone] = useState("")
 function isValidTunisianPhoneNumber(phoneNumber) {
   // Regular expression for Tunisian phone number
   const phoneRegex = /^(\+216)?(2|4|5|9)\d{7}$/;
 
   if( phoneRegex.test(phoneNumber)){
-    setPhone(phoneNumber)
+    inputs.phone=phoneNumber
     setValidPhone(true)
   }
   else{
@@ -104,7 +95,14 @@ function isValidTunisianPhoneNumber(phoneNumber) {
   }
 }
 
-
+//inputs
+const [inputs,setInputs]=useState([{
+  name:"",
+  lastName:"",
+  email:"",
+  phone:"",
+  password:""
+}])
 // get the inputs error
   
 function validInputs(){
@@ -134,9 +132,14 @@ function validInputs(){
       }
     }
     else{
-      console.log(name+" "+lastName+" "+email+" "+phone  + ""+ strength)
+      onClick(inputs)
+      
+      console.log(inputs.name+" "+inputs.lastName+" "+inputs.email+" "+inputs.phone  + ""+ strength)
     }
 } 
+
+// 
+
   return (
     <>
       <InputController

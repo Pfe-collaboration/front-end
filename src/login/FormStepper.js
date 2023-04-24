@@ -19,15 +19,15 @@ import { FarmInformationForm } from "./forms/FarmInformationForm";
 function getSteps({ content }) {
   return [content.BasicInformation, content.farmInformation];
 }
-//handle inputs
-function handleInputs(inputs){
-  console.log(inputs)
+function handleInputs(handle){
+  console.log(handle)
 }
 
 function getStepContent(step, { content }) {
+  
   switch (step) {
     case 0:
-      return <BasicForm getInputs={handleInputs} content={content} />;
+      return <BasicForm  onClick={handleInputs} content={content} />;
     case 1:
       return <FarmInformationForm content={content} />;
     default:
@@ -36,6 +36,7 @@ function getStepContent(step, { content }) {
 }
 
 const LinaerStepper = ({ content }) => {
+  
   //default inputs
   const methods = useForm({
     defaultValues: {
@@ -97,7 +98,9 @@ const LinaerStepper = ({ content }) => {
   // const onSubmit = (data) => {
   //   console.log(data);
   // };
+
   return (
+    
     <div dir={content.dir}>
       <Stepper
           
@@ -167,7 +170,7 @@ const LinaerStepper = ({ content }) => {
               dir={content.dir}
                 variant="contained"
                 color="primary"
-                // onClick={handleNext}
+                onClick={()=>{console.log("khayti")}}
                 type="submit"
               >
                 {activeStep === steps.length - 1
