@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { liste } from "../state, region, zipCode List/TunisiaList";
 import { SelectController } from "./elements/SelectController";
-export const FarmInformationForm = ({ content }) => {
+import Button from "@mui/material/Button";
+//arrow icon
+import EastIcon from '@mui/icons-material/East';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+export const FarmInformationForm = ({ content ,OnChange,activeStep}) => {
   //tunisia states
   const Tunisie = [
     "TOZEUR",
@@ -101,31 +106,55 @@ export const FarmInformationForm = ({ content }) => {
     //set the new zipcode
     setSelectedZipCode(newZipCode);
   };
+  const [stp,setStp] = useState(2)
+  const handleBack=(event)=>{
+    console.log("done")
+    const step =event.target.value
+    OnChange(step)
+    console.log(step)
+    setStp(2)
+  }
   return (
     <>
-    {console.log(state+selectedRegion+selectedZipCode)}
+      {console.log(state + selectedRegion + selectedZipCode)}
       <SelectController
         labelname={content.state}
         values={Tunisie}
         OnChange={handleSelectedState}
-        
       />
       <pre></pre>
       <SelectController
         labelname={content.region}
         values={region}
         OnChange={handleSelectedRegion}
-        
       />
       <pre></pre>
       <SelectController
         labelname={content.zipcode}
         values={CodePostale}
         OnChange={handleSelectedZipCode}
-        
       />
-      
+
       <pre> </pre>
+      <Button
+        style={{ marginRight: "20px" }}
+        dir={content.dir}
+        disabled={activeStep === 0}
+        onClick={handleBack}
+      value={1}
+      >
+        {content.dir === "ltr" ? <ArrowBackIcon /> : <EastIcon />}
+        {content.back}
+      </Button>
+      <Button
+        style={{ marginRight: "20px" }}
+        dir={content.dir}
+        variant="contained"
+        color="primary"
+        
+      >
+        {content.Finish}
+      </Button>
     </>
   );
 };

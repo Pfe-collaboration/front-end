@@ -24,7 +24,7 @@ const TabControl = styled.div`
 `;
 
 const TabContent = tw(motion.div)`mt-0 flex flex-wrap sm:-mr-10 md:-mr-6 lg:-mr-12`;
-const CardContainer = tw.div`mt-0 w-full sm:w-1/2 md:w-1/4 lg:w-1/5 sm:pr-10 md:pr-6 lg:pr-12`;
+const CardContainer = tw.div`mt-0 w-full sm:w-1/2 md:w-1/4 lg:w-1/4 sm:pr-10 md:pr-6 lg:pr-12`;
 const Card = tw(motion.a)`bg-gray-200 rounded-b block max-w-xs mx-auto sm:max-w-none sm:mx-0 no-underline`;
 const CardImageContainer = styled.div`
   ${props => css`background-image: url("${props.imageSrc}");`}
@@ -42,7 +42,7 @@ const CardHoverOverlay = styled(motion.div)`
   background-color: rgba(255, 255, 255, 0.5);
   ${tw`absolute inset-0 flex justify-center items-center`}
 `;
-const CardButton = tw(PrimaryButtonBase)`text-sm border-0 `;
+const CardButton = tw(PrimaryButtonBase)`text-sm border-0 ml-2`;
 
 const CardReview = tw.div`font-medium text-xs text-gray-600 `;
 
@@ -50,7 +50,7 @@ const CardText = tw.div`pl-4 text-gray-900`;
 const CardTitle = tw.h5`text-lg font-bold  group-hover:text-primary-500 `;
 const CardContent = tw.p`mt-0 text-sm font-medium text-gray-600`;
 const CardPrice = tw.p`pb-2 mt-0 text-xl font-bold `;
-
+// const ButtonContainer = tw.div`flex `
 const DecoratorBlob1 = styled(SvgDecoratorBlob1)`
   ${tw`pointer-events-none -z-20 absolute right-0 top-0 h-64 w-64 opacity-15 transform translate-x-2/3 -translate-y-12 text-pink-400`}
 `;
@@ -58,7 +58,7 @@ const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
   ${tw`pointer-events-none -z-20 absolute left-0 bottom-0 h-80 w-80 opacity-15 transform -translate-x-2/3 text-primary-500`}
 `;
 
-export default ({
+const TabCardGrid =({
   heading = "Checkout the Menu",
   tabs = {
     Starters: [
@@ -213,7 +213,8 @@ export default ({
                       }}
                       transition={{ duration: 0.3 }}
                     >
-                      <CardButton>Buy Now</CardButton>
+                      <CardButton>join Now</CardButton>
+                      <CardButton>details</CardButton>
                     </CardHoverOverlay>
                   </CardImageContainer>
                   <CardText>
@@ -321,3 +322,4 @@ const getRandomCards = () => {
   // Shuffle array
   return cards.sort(() => Math.random() - 0.5);
 };
+export default TabCardGrid;

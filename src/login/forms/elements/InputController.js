@@ -11,6 +11,7 @@ export const InputController = ({
   placeholder,
   OnChange,
   InputType,
+  error
 
 }) => {
   const { control } = useFormContext();
@@ -30,7 +31,8 @@ export const InputController = ({
     return (
       <>
         <TextField
-          value={value}
+        error={!error}
+           value={value}
           onChange={(event) => setValue(event.target.value)}
           onBlur={handleBlur}
           id={name}
@@ -52,7 +54,10 @@ export const InputController = ({
             ),
           }}
         />
-      </>
+        {!error&& 
+        <span style={{color:"red"}}>invalid {labelContent} </span>
+      }
+        </>
     );
   }
   //
