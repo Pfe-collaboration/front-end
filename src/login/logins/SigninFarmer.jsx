@@ -2,7 +2,7 @@ import loginbg from "../../images/loginbg.png";
 import { useContext, useState } from "react";
 import tw from "twin.macro";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Container = tw.section`bg-gray-300 dark:bg-gray-900 `;
@@ -25,9 +25,32 @@ const P = tw.p`text-sm font-light text-gray-500 dark:text-gray-400 `;
 const A = tw.a`font-medium text-primary-600 hover:underline dark:text-primary-500 hover:text-third-500 `;
 const Image = tw.img`w-20 h-20 mx-6`;
 const Span = tw.p`text-center text-red-700 font-normal text-base `;
+
+
 export const SigninFarmer = () => {
+
+  //chat try 
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post('/api/farmers/login', { email, password });
+      localStorage.setItem('token', res.data.token);
+      console.log("logged in")
+      // redirect the user to the protected route
+      window.location.href="/"
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  //
   const [credentials, setCredentials] = useState({
-    email: undefined,
+    username: undefined,
     password: undefined,
   });
   const navigate = useNavigate();
@@ -39,7 +62,7 @@ export const SigninFarmer = () => {
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
     try {
-      const res = await axios.post("/login", credentials);
+      const res = await axios.post("/api/auth/login", credentials);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
       navigate("/");
     } catch (error) {
@@ -66,7 +89,7 @@ export const SigninFarmer = () => {
                   className=""
                   placeholder="name@company.com"
                   required
-                  onChange={handleChange}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div>
@@ -77,6 +100,7 @@ export const SigninFarmer = () => {
                   id="password"
                   placeholder="••••••••"
                   required
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <SocialButtons>
@@ -98,7 +122,7 @@ export const SigninFarmer = () => {
                 </StartItem>
                 <ALink href="#">Forgot password?</ALink>
               </SocialButtons>
-              <Button disabled={loading} type="submit" onClick={handleLogin}>
+              <Button disabled={loading} type="submit" onClick={handleSubmit}>
                 Sign in
               </Button>
               {error && <Span>{error.message}</Span>}

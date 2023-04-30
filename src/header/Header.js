@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ import useAnimatedNavToggler from "../helpers/useAnimatedNavToggler.js";
 import logo from "../images/logo.png";
 import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
+import api from "../login/logins/api.js";
 
 const Header = tw.header`
   flex justify-between items-center
@@ -72,16 +73,31 @@ const AppHeader = ({ roundedHeaderButton = false, logoLink, links, className, co
    * changing the defaultLinks variable below below.
    * If you manipulate links here, all the styling on the links is already done for you. If you pass links yourself though, you are responsible for styling the links or use the helper styled components that are defined here (NavLink)
    */
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get('/farmers/farmer');
+        setData(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
   const defaultLinks = [
     <NavLinks key={1}>
       <NavLink href="/#">About</NavLink>
       <NavLink href="/#">Blog</NavLink>
       <NavLink href="/#">Pricing</NavLink>
       <NavLink href="/#">Contact Us</NavLink>
-      <NavLink href="/" tw="lg:ml-12!">
+     {data?<></>: <>        
+      <NavLink href="/login" tw="lg:ml-12!">
         Login
       </NavLink> 
       <PrimaryLink css={roundedHeaderButton && tw`rounded-full`}href="/signUp">Sign Up</PrimaryLink>
+      </>}
     </NavLinks>
   ];
 
