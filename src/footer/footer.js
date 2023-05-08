@@ -12,11 +12,11 @@ const SixColumns = tw.div`flex flex-wrap text-center sm:text-left justify-center
 
 const Column = tw.div`px-4 sm:px-0 sm:w-1/4 md:w-auto mt-12`;
 
-const ColumnHeading = tw.h5`uppercase font-bold ml-6`;
+const ColumnHeading = tw.h5`uppercase font-bold ml-6 text-third-200`;
 
-const LinkList = tw.ul`mt-6 text-sm font-medium`;
+const LinkList = tw.ul`mt-6 text-sm font-medium flex flex-col`;
 const LinkListItem = tw.li`mt-3 list-none`;
-const Link = tw.a`border-b-2 border-transparent hocus:border-gray-700 pb-1 transition duration-300 text-gray-600 no-underline `;
+const Link = tw.a`border-b-2 border-transparent hocus:border-gray-700 pb-1 transition duration-300 text-gray-600 no-underline hover:text-primary-400`;
 
 const SubscribeNewsletterColumn = tw(Column)`text-center lg:text-left w-full! lg:w-auto! mt-20 lg:mt-12`;
 const SubscribeNewsletterContainer = tw.div`max-w-sm mx-auto lg:mx-0 `;
@@ -135,7 +135,7 @@ const Footer= () => {
             <LogoImg src={LogoImage} />
             <LogoText>Bio Market.</LogoText>
           </LogoContainer>
-          <CopywrightNotice>&copy; 2018 Treact Inc. All Rights Reserved.</CopywrightNotice>
+          <CopywrightNotice>&copy; 2018 Bio Market. All Rights Reserved.</CopywrightNotice>
           <SocialLinksContainer>
             <SocialLink href="https://facebook.com">
               <FacebookIcon />

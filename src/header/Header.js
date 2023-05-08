@@ -10,12 +10,15 @@ import logo from "../images/logo.png";
 import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
 import api from "../login/logins/api.js";
+import { Link } from "react-router-dom";
 
 const Header = tw.header`
-  flex justify-between items-center
+  flex justify-between items-center 
   max-w-screen-xl mx-auto
+  
 `;
-
+const Container=tw.div`sticky top-0 fixed top-0 z-10 w-full bg-white `
+const ImgWrapper = tw.img`ml-16 rounded-full w-[50px] h-[50px]`;
 export const NavLinks = tw.div`inline-block`;
 
 /* hocus: stands for "on hover or focus"
@@ -59,7 +62,13 @@ export const DesktopNavLinks = tw.nav`
   hidden lg:flex flex-1 justify-between items-center
 `;
 
-const AppHeader = ({ roundedHeaderButton = false, logoLink, links, className, collapseBreakpointClass = "lg" }) => {
+const AppHeader = ({
+  roundedHeaderButton = false,
+  logoLink,
+  links,
+  className,
+  collapseBreakpointClass = "lg",
+}) => {
   /*
    * This header component accepts an optionals "links" prop that specifies the links to render in the navbar.
    * This links props should be an array of "NavLinks" components which is exported from this file.
@@ -78,31 +87,46 @@ const AppHeader = ({ roundedHeaderButton = false, logoLink, links, className, co
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await api.get('/farmers/farmer');
+        const res = await api.get("/farmers/farmer");
         setData(res.data);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
-  }, []);
+  }, [data]);
   const defaultLinks = [
     <NavLinks key={1}>
-      <NavLink href="/#">About</NavLink>
-      <NavLink href="/#">Blog</NavLink>
-      <NavLink href="/#">Pricing</NavLink>
+      <NavLink href="/">Home</NavLink>
+      <NavLink href="/#">Collaborations</NavLink>
+      <NavLink href="/#">About us </NavLink>
       <NavLink href="/#">Contact Us</NavLink>
-     {data?<></>: <>        
-      <NavLink href="/login" tw="lg:ml-12!">
-        Login
-      </NavLink> 
-      <PrimaryLink css={roundedHeaderButton && tw`rounded-full`}href="/signUp">Sign Up</PrimaryLink>
-      </>}
-    </NavLinks>
+      <NavLink href="/#">notifications</NavLink>
+      {data ? (
+        <>
+          <Link to="/profile">
+            <ImgWrapper src="https://scontent.ftun4-2.fna.fbcdn.net/v/t39.30808-6/297860797_3378071792482285_6297438250722114348_n.png?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=TIDdYJyjnTMAX9p_6sE&_nc_ht=scontent.ftun4-2.fna&oh=00_AfBJUdirIxONLe3BSBQUPhqQifg5eXhLKnbBMy9Vb0YXLQ&oe=645AA36C" />
+          </Link>
+        </>
+      ) : (
+        <>
+          <NavLink href="/login" tw="lg:ml-12!">
+            Login
+          </NavLink>
+          <PrimaryLink
+            css={roundedHeaderButton && tw`rounded-full`}
+            href="/signUp"
+          >
+            Sign Up
+          </PrimaryLink>
+        </>
+      )}
+    </NavLinks>,
   ];
 
   const { showNavLinks, animation, toggleNavbar } = useAnimatedNavToggler();
-  const collapseBreakpointCss = collapseBreakPointCssMap[collapseBreakpointClass];
+  const collapseBreakpointCss =
+    collapseBreakPointCssMap[collapseBreakpointClass];
 
   const defaultLogoLink = (
     <LogoLink href="/">
@@ -115,22 +139,37 @@ const AppHeader = ({ roundedHeaderButton = false, logoLink, links, className, co
   links = links || defaultLinks;
 
   return (
-    <Header  className={className || "header-light"}>
+    <Container>
+    <Header className={className || "header-light "}>
       <DesktopNavLinks css={collapseBreakpointCss.desktopNavLinks}>
         {logoLink}
         {links}
       </DesktopNavLinks>
 
-      <MobileNavLinksContainer css={collapseBreakpointCss.mobileNavLinksContainer}>
+      <MobileNavLinksContainer
+        css={collapseBreakpointCss.mobileNavLinksContainer}
+      >
         {logoLink}
-        <MobileNavLinks initial={{ x: "150%", display: "none" }} animate={animation} css={collapseBreakpointCss.mobileNavLinks}>
+        <MobileNavLinks
+          initial={{ x: "150%", display: "none" }}
+          animate={animation}
+          css={collapseBreakpointCss.mobileNavLinks}
+        >
           {links}
         </MobileNavLinks>
-        <NavToggle onClick={toggleNavbar} className={showNavLinks ? "open" : "closed"}>
-          {showNavLinks ? <CloseIcon tw="w-6 h-6 " /> : <MenuIcon tw="w-6 h-6 " />}
+        <NavToggle
+          onClick={toggleNavbar}
+          className={showNavLinks ? "open" : "closed"}
+        >
+          {showNavLinks ? (
+            <CloseIcon tw="w-6 h-6 " />
+          ) : (
+            <MenuIcon tw="w-6 h-6 " />
+          )}
         </NavToggle>
       </MobileNavLinksContainer>
     </Header>
+    </Container>
   );
 };
 
@@ -144,22 +183,22 @@ const collapseBreakPointCssMap = {
   sm: {
     mobileNavLinks: tw`sm:hidden`,
     desktopNavLinks: tw`sm:flex`,
-    mobileNavLinksContainer: tw`sm:hidden`
+    mobileNavLinksContainer: tw`sm:hidden`,
   },
   md: {
     mobileNavLinks: tw`md:hidden`,
     desktopNavLinks: tw`md:flex`,
-    mobileNavLinksContainer: tw`md:hidden`
+    mobileNavLinksContainer: tw`md:hidden`,
   },
   lg: {
     mobileNavLinks: tw`lg:hidden`,
     desktopNavLinks: tw`lg:flex`,
-    mobileNavLinksContainer: tw`lg:hidden`
+    mobileNavLinksContainer: tw`lg:hidden`,
   },
   xl: {
     mobileNavLinks: tw`lg:hidden`,
     desktopNavLinks: tw`lg:flex`,
-    mobileNavLinksContainer: tw`lg:hidden`
-  }
+    mobileNavLinksContainer: tw`lg:hidden`,
+  },
 };
 export default AppHeader;
