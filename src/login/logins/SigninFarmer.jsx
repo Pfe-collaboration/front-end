@@ -1,8 +1,8 @@
 import loginbg from "../../images/loginbg.png";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import tw from "twin.macro";
-import { AuthContext } from "../../context/AuthContext";
-import { redirect, useNavigate } from "react-router-dom";
+// import { AuthContext } from "../../context/AuthContext";
+// import { redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Container = tw.section`bg-gray-300 dark:bg-gray-900 `;
@@ -28,23 +28,30 @@ const Span = tw.p`text-center text-red-700 font-normal text-base `;
 const Intro = tw.span`text-center mb-2 font-serif text-gray-900 dark:text-white`;
 const HighlightedText2 = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block font-serif text-[30px] `;
 
-
 export const SigninFarmer = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleFarmerSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
-      const res = await axios.post("/api/auth/loginFarmer", { email, password });
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("FarmerId", res.data._id);
+      const res = await axios.post("/api/auth/loginFarmer", {
+        email,
+        password,
+      });
+      const token = res.data.token;
+      const farmer = res.data.farmer;
+      console.log(token);
+      localStorage.setItem("token", token);
+      localStorage.setItem('Farmer', JSON.stringify(farmer));
 
-      console.log("logged in");
+      console.log(farmer._id);
       // redirect the user to the protected route
+      setLoading(false);
       window.location.href = "/";
     } catch (error) {
-      setError("incorrect login or pwd ")
+      setError("incorrect login or pwd ");
       console.error(error);
     }
   };
@@ -58,34 +65,43 @@ export const SigninFarmer = () => {
       window.location.href = "/";
     } catch (error) {
       console.error(error);
-
     }
   };
 
   //
 
-  const [loading,setLoading] = useState(false)
-  const [error,setError] = useState(null);
- 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   //two pages display
   const [isFarmer, setIsFarmer] = useState(false);
   const handle = () => {
     setIsFarmer(!isFarmer);
   };
-  const intro = ["Join the community of farmers to sell your bio pistachio and almond","Discover unique and high-quality products from local farmers"]
-  const userType = ["farmer","buyer"]
+  const intro = [
+    "Join the community of farmers to sell your bio pistachio and almond",
+    "Discover unique and high-quality products from local farmers",
+  ];
+  const userType = ["farmer", "buyer"];
   return (
     <Container>
       <UndeContainer>
         <FormWrapper>
           <Wrapper>
             <>
-            <H1>Sign in as a {isFarmer?<HighlightedText2>{userType[0]}</HighlightedText2>:<HighlightedText2>{userType[1]}</HighlightedText2>}</H1>
+              <H1>
+                Sign in as a{" "}
+                {isFarmer ? (
+                  <HighlightedText2>{userType[0]}</HighlightedText2>
+                ) : (
+                  <HighlightedText2>{userType[1]}</HighlightedText2>
+                )}
+              </H1>
               <Link>
                 <Image src={loginbg} alt="logo" />
                 Bio Market
               </Link>
-              <Intro> {isFarmer? intro[0]:intro[1] }</Intro>
+              <Intro> {isFarmer ? intro[0] : intro[1]}</Intro>
               <Form className="space-y-4 md:space-y-6" action="#">
                 <div>
                   <Label htmlFor="email">Your email or phone </Label>
@@ -130,11 +146,17 @@ export const SigninFarmer = () => {
                   <ALink href="#">Forgot password?</ALink>
                 </SocialButtons>
 
-                <Button disabled={loading} type="submit" onClick={isFarmer? handleFarmerSubmit:handleBuyerSubmit}>
+                <Button
+                  disabled={loading}
+                  type="submit"
+                  onClick={isFarmer ? handleFarmerSubmit : handleBuyerSubmit}
+                >
                   Sign in
                 </Button>
                 {error && <Span>{error}</Span>}
-                <ALink onClick={handle}>sign in as a {isFarmer?userType[1]:userType[0]}</ALink>
+                <ALink onClick={handle}>
+                  sign in as a {isFarmer ? userType[1] : userType[0]}
+                </ALink>
                 <P className="">
                   Don’t have an account yet? <A href="/signUp"> Sign up</A>
                 </P>

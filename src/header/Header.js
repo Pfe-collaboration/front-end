@@ -17,7 +17,7 @@ const Header = tw.header`
   max-w-screen-xl mx-auto
   
 `;
-const Container=tw.div`sticky top-0 fixed top-0 z-10 w-full bg-white `
+const Container = tw.div`sticky top-0 fixed top-0 z-10 w-full bg-white `;
 const ImgWrapper = tw.img`ml-16 rounded-full w-[50px] h-[50px]`;
 export const NavLinks = tw.div`inline-block`;
 
@@ -82,19 +82,17 @@ const AppHeader = ({
    * changing the defaultLinks variable below below.
    * If you manipulate links here, all the styling on the links is already done for you. If you pass links yourself though, you are responsible for styling the links or use the helper styled components that are defined here (NavLink)
    */
-  const [data, setData] = useState(null);
+  const [farmerloggedin, setFarmerloggedin] = useState(false);
+  const farmer = JSON.parse(localStorage.getItem("Farmer"));
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await api.get("/farmers/farmer");
-        setData(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, [data]);
+   useEffect(() => {
+     if(farmer){
+       setFarmerloggedin(true)
+     }
+     else{
+       setFarmerloggedin(false)
+     }
+   }, [farmerloggedin]);
   const defaultLinks = [
     <NavLinks key={1}>
       <NavLink href="/">Home</NavLink>
@@ -102,10 +100,10 @@ const AppHeader = ({
       <NavLink href="/#">About us </NavLink>
       <NavLink href="/#">Contact Us</NavLink>
       <NavLink href="/#">notifications</NavLink>
-      {data ? (
+      {farmerloggedin ? (
         <>
           <Link to="/profile">
-            <ImgWrapper src="https://scontent.ftun4-2.fna.fbcdn.net/v/t39.30808-6/297860797_3378071792482285_6297438250722114348_n.png?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=TIDdYJyjnTMAX9p_6sE&_nc_ht=scontent.ftun4-2.fna&oh=00_AfBJUdirIxONLe3BSBQUPhqQifg5eXhLKnbBMy9Vb0YXLQ&oe=645AA36C" />
+            <ImgWrapper src="https://scontent.fnbe1-2.fna.fbcdn.net/v/t39.30808-6/297860797_3378071792482285_6297438250722114348_n.png?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=U0yvv8LbnMoAX84m-Pl&_nc_ht=scontent.fnbe1-2.fna&oh=00_AfCft6l3mHFbWvalShpfZoPudqz5JB5TWqXwwl5aIVKt-w&oe=646486AC" />
           </Link>
         </>
       ) : (
@@ -140,35 +138,35 @@ const AppHeader = ({
 
   return (
     <Container>
-    <Header className={className || "header-light "}>
-      <DesktopNavLinks css={collapseBreakpointCss.desktopNavLinks}>
-        {logoLink}
-        {links}
-      </DesktopNavLinks>
-
-      <MobileNavLinksContainer
-        css={collapseBreakpointCss.mobileNavLinksContainer}
-      >
-        {logoLink}
-        <MobileNavLinks
-          initial={{ x: "150%", display: "none" }}
-          animate={animation}
-          css={collapseBreakpointCss.mobileNavLinks}
-        >
+      <Header className={className || "header-light "}>
+        <DesktopNavLinks css={collapseBreakpointCss.desktopNavLinks}>
+          {logoLink}
           {links}
-        </MobileNavLinks>
-        <NavToggle
-          onClick={toggleNavbar}
-          className={showNavLinks ? "open" : "closed"}
+        </DesktopNavLinks>
+
+        <MobileNavLinksContainer
+          css={collapseBreakpointCss.mobileNavLinksContainer}
         >
-          {showNavLinks ? (
-            <CloseIcon tw="w-6 h-6 " />
-          ) : (
-            <MenuIcon tw="w-6 h-6 " />
-          )}
-        </NavToggle>
-      </MobileNavLinksContainer>
-    </Header>
+          {logoLink}
+          <MobileNavLinks
+            initial={{ x: "150%", display: "none" }}
+            animate={animation}
+            css={collapseBreakpointCss.mobileNavLinks}
+          >
+            {links}
+          </MobileNavLinks>
+          <NavToggle
+            onClick={toggleNavbar}
+            className={showNavLinks ? "open" : "closed"}
+          >
+            {showNavLinks ? (
+              <CloseIcon tw="w-6 h-6 " />
+            ) : (
+              <MenuIcon tw="w-6 h-6 " />
+            )}
+          </NavToggle>
+        </MobileNavLinksContainer>
+      </Header>
     </Container>
   );
 };

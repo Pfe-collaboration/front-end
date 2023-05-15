@@ -28,6 +28,9 @@ import Profile from "./Farmer/Profile";
 import CollaborationPage from "./Collaborations/CollaborationDetails";
 import AnimationRevealPage from "./helpers/AnimationRevealPage";
 import api from "./login/logins/api";
+import Chat from "./Chat/Chat";
+import { Login } from "./pages/Login";
+import CreateCollaboration from "./Collaborations/CreateCollaboration";
 //import TwoCard from "./components/cards/PortfolioTwoCardsWithImage";
 const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block italic `;
 const HighlightedText2 = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block font-serif text-[30px] `;
@@ -205,7 +208,6 @@ function App() {
               )
             }
           ></Route>
-
           <Route
             path="/profile"
             element={
@@ -216,11 +218,27 @@ function App() {
             }
           ></Route>
           <Route
-            path="/collab"
+            path="/chat"
             element={
               <>
                 <AppHeader />
-                <CollaborationPage />
+                <Chat />
+              </>
+            }
+          ></Route>
+          <Route
+            path="/loginbuyer"
+            element={
+              <>
+                <Login/>
+              </>
+            }
+          ></Route>
+          <Route
+            path="/createCollab"
+            element={
+              <>
+                <CreateCollaboration/>
               </>
             }
           ></Route>
