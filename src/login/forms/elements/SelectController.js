@@ -11,8 +11,6 @@ export const SelectController = ({ OnChange, labelname, values }) => {
   //get every select change and update the selected item const
   const handleChange = (event) => {
     const selectedItem = event.target.value;
-    //send back the selected item to the parent component
-    OnChange(selectedItem);
     //set the selected item to put it in the select value
     setSelectedItem(selectedItem);
   };

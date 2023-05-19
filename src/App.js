@@ -24,6 +24,8 @@ import Main from "./Main";
 import Collabs from "./Collaborations/Collabs";
 import PopUp from "./helpers/PopUp";
 import Footer from "./footer/footer";
+import LinaerStepper from "./login/LinearStepper";
+import Stepper from "./login/logins/Stepper";
 //import TwoCard from "./components/cards/PortfolioTwoCardsWithImage";
 
 //

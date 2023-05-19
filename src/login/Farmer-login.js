@@ -1,7 +1,7 @@
-import FormStepper from "./FormStepper.js";
 import { CssBaseline, Container, Paper, Box } from "@mui/material";
 import logo from "../images/logo.png";
 import tw from "twin.macro";
+import Stepper from "./logins/Stepper.js";
 const Link = tw.a`ml-4 text-primary-300 no-underline flex items-center  text-2xl font-semibold text-gray-900 dark:text-white`;
 const Center = tw.div`grid items-center justify-center `;
 const P = tw.p`text-sm font-light text-gray-500 dark:text-gray-400 text-end`;
@@ -19,7 +19,7 @@ const FarmerLogin = ({ content }) => {
         <br />
 
         <Paper component={Box} p={4}>
-          <FormStepper content={content} />
+          <Stepper  />
         </Paper>
         <pre></pre>
         <P>
