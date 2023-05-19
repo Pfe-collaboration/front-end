@@ -27,7 +27,7 @@ const NextButton = tw(ControlButton)``;
 
 const CardSlider = styled(Slider)`
   ${tw`mt-16`}
-  .slick-track { 
+  .slick-track {
     ${tw`flex`}
   }
   .slick-slide {
@@ -35,9 +35,9 @@ const CardSlider = styled(Slider)`
   }
 `;
 const Card = tw.div`h-full flex! flex-col sm:border max-w-sm sm:rounded-tl-4xl sm:rounded-br-5xl relative focus:outline-none`;
-const CardImage = styled.div(props => [
+const CardImage = styled.div((props) => [
   `background-image: url("${props.imageSrc}");`,
-  tw`w-full h-56 sm:h-64 bg-cover bg-center rounded sm:rounded-none sm:rounded-tl-4xl`
+  tw`w-full h-56 sm:h-64 bg-cover bg-center rounded sm:rounded-none sm:rounded-tl-4xl`,
 ]);
 
 const TextInfo = tw.div`py-6 sm:px-10 sm:py-6`;
@@ -64,8 +64,10 @@ const IconContainer = styled.div`
 `;
 const Text = tw.div`ml-2 text-sm font-semibold text-gray-800 `;
 
-const PrimaryButton = tw(PrimaryButtonBase)`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
-const ThreeCredsSlider= () => {
+const PrimaryButton = tw(
+  PrimaryButtonBase
+)`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
+const ThreeCredsSlider = ({ Farmers, FarmersNames, Quantities }) => {
   // useState is used instead of useRef below because we want to re-render when sliderRef becomes available (not null)
   const [sliderRef, setSliderRef] = useState(null);
   const sliderSettings = {
@@ -76,53 +78,21 @@ const ThreeCredsSlider= () => {
         breakpoint: 1280,
         settings: {
           slidesToShow: 2,
-        }
+        },
       },
 
       {
         breakpoint: 900,
         settings: {
           slidesToShow: 1,
-        }
+        },
       },
-    ]
+    ],
   };
 
   /* Change this according to your needs */
-  const cards = [
-    {
-      imageSrc: "https://www.shutterstock.com/image-photo/attractive-man-sexy-work-suit-260nw-1689029407.jpg",
-      name: "Belgacem",
-      bio: "Lorem ipsum dolor sit amet, consectur dolori adipiscing elit, sed do eiusmod tempor nova incididunt ut labore et dolore magna aliqua.",
-      locationText: "Gafsa, Tunisia",
-      participate: "USD 39/Day",
-      rating: "4.8",
-    },
-    {
-      imageSrc: "https://c8.alamy.com/comp/TR5WDE/pistachio-nut-pistacia-vera-kurdian-farmer-trimming-pistachio-tree-turkey-anatolia-ayran-kasabasi-TR5WDE.jpg",
-      name: "Mahmoud",
-      bio: "Lorem ipsum dolor sit amet, consectur dolori adipiscing elit, sed do eiusmod tempor nova incididunt ut labore et dolore magna aliqua.",
-      locationText: "Gafsa, Tunisia",
-      participate: "USD 50/Day",
-      rating: 4.9,
-    },
-    {
-      imageSrc: "https://i.ytimg.com/vi/E-NGGI_RiV0/maxresdefault.jpg",
-      name: "Masoud",
-      bio: "Lorem ipsum dolor sit amet, consectur dolori adipiscing elit, sed do eiusmod tempor nova incididunt ut labore et dolore magna aliqua.",
-      locationText: "Sidi Bouzid, Tunisia",
-      participate: "USD 19/Day",
-      rating: "5.0",
-    },
-    {
-      imageSrc: "https://c8.alamy.com/comp/2HX2M6F/caucasian-positive-looking-male-farmer-in-overalls-and-cap-inspect-corn-stalks-at-field-2HX2M6F.jpg",
-      name: "Fadhel",
-      bio: "Lorem ipsum dolor sit amet, consectur dolori adipiscing elit, sed do eiusmod tempor nova incididunt ut labore et dolore magna aliqua.",
-      locationText: "Kasserine, Tunisia",
-      participate: "USD 99/Day",
-      rating: 4.5,
-    },
-  ]
+  const Names = FarmersNames;
+  const cards = Array.from(Farmers);
 
   return (
     <Container>
@@ -130,17 +100,21 @@ const ThreeCredsSlider= () => {
         <HeadingWithControl>
           <Heading>Participated Farmers</Heading>
           <Controls>
-            <PrevButton onClick={sliderRef?.slickPrev}><ChevronLeftIcon/></PrevButton>
-            <NextButton onClick={sliderRef?.slickNext}><ChevronRightIcon/></NextButton>
+            <PrevButton onClick={sliderRef?.slickPrev}>
+              <ChevronLeftIcon />
+            </PrevButton>
+            <NextButton onClick={sliderRef?.slickNext}>
+              <ChevronRightIcon />
+            </NextButton>
           </Controls>
         </HeadingWithControl>
         <CardSlider ref={setSliderRef} {...sliderSettings}>
-          {cards.map((card, index) => (
+          { cards.map((card, index) => (
             <Card key={index}>
               <CardImage imageSrc={card.imageSrc} />
               <TextInfo>
                 <TitleReviewContainer>
-                  <Title>{card.name}</Title>
+                  <Title>{card.name + card.LastName}</Title>
                   <RatingsInfo>
                     <StarIcon />
                     <Rating>{card.rating}</Rating>
@@ -154,10 +128,8 @@ const ThreeCredsSlider= () => {
                     <Text>{card.locationText}</Text>
                   </IconWithText>
                   <IconWithText>
-                    <IconContainer>
-                      <PriceIcon />
-                    </IconContainer>
-                    <Text>{card.participate}</Text>
+                    <Text>Gave</Text>
+                    <Text>{Quantities[index]} Kg</Text>
                   </IconWithText>
                 </SecondaryInfoContainer>
                 <Description>{card.bio}</Description>

@@ -24,13 +24,20 @@ export const NavLinks = tw.div`inline-block`;
 /* hocus: stands for "on hover or focus"
  * hocus:bg-primary-700 will apply the bg-primary-700 class on hover or focus
  */
-export const NavLink = tw.a`
+export const NavLink = styled.a(({ active }) => [
+  tw`
     text-third-300
-  no-underline
-  text-lg my-2 lg:text-sm lg:mx-6 lg:my-0
-  font-semibold tracking-wide transition duration-300
-  pb-1 border-b-2 border-transparent hover:border-primary-500 hocus:text-primary-500
-`;
+    no-underline
+    text-lg my-2 lg:text-sm lg:mx-6 lg:my-0
+    font-semibold tracking-wide transition duration-300
+    pb-1 border-b-2 border-transparent hover:border-primary-500 hocus:text-primary-500
+    cursor-pointer
+  `,
+  active &&
+    css`
+      ${tw`text-primary-500`}
+    `,
+]);
 
 export const PrimaryLink = tw(NavLink)`
   lg:mx-0
@@ -63,6 +70,7 @@ export const DesktopNavLinks = tw.nav`
 `;
 
 const AppHeader = ({
+  Active,
   roundedHeaderButton = false,
   logoLink,
   links,
@@ -84,27 +92,45 @@ const AppHeader = ({
    */
   const [farmerloggedin, setFarmerloggedin] = useState(false);
   const farmer = JSON.parse(localStorage.getItem("Farmer"));
+  const Logout = () => {
+    if (window.confirm("Do you really want to leave?")) {
+      localStorage.removeItem("Farmer");
+      window.location.reload();    }
+    
 
-   useEffect(() => {
-     if(farmer){
-       setFarmerloggedin(true)
-     }
-     else{
-       setFarmerloggedin(false)
-     }
-   }, [farmerloggedin]);
+  };
+  useEffect(() => {
+    if (farmer) {
+      setFarmerloggedin(true);
+    } else {
+      setFarmerloggedin(false);
+    }
+  }, [farmerloggedin]);
   const defaultLinks = [
     <NavLinks key={1}>
-      <NavLink href="/">Home</NavLink>
-      <NavLink href="/#">Collaborations</NavLink>
-      <NavLink href="/#">About us </NavLink>
-      <NavLink href="/#">Contact Us</NavLink>
-      <NavLink href="/#">notifications</NavLink>
+      <NavLink id="home" active={Active === "home"} href="/">
+        Home
+      </NavLink>
+      <NavLink id="collabs" active={Active === "collabs"} href="/collabs">
+        Collaborations
+      </NavLink>
+      <NavLink id="about" active={Active === "about"} href="/#">
+        About us{" "}
+      </NavLink>
+      <NavLink id="contact" active={Active === "contact"} href="/#">
+        Contact Us
+      </NavLink>
+      <NavLink id="notification" active={Active === "notification"} href="/#">
+        notifications
+      </NavLink>
       {farmerloggedin ? (
         <>
-          <Link to="/profile">
-            <ImgWrapper src="https://scontent.fnbe1-2.fna.fbcdn.net/v/t39.30808-6/297860797_3378071792482285_6297438250722114348_n.png?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=U0yvv8LbnMoAX84m-Pl&_nc_ht=scontent.fnbe1-2.fna&oh=00_AfCft6l3mHFbWvalShpfZoPudqz5JB5TWqXwwl5aIVKt-w&oe=646486AC" />
-          </Link>
+          
+            <NavLink to="/profile">
+              <ImgWrapper src="https://scontent.ftun2-2.fna.fbcdn.net/v/t39.30808-6/297860797_3378071792482285_6297438250722114348_n.png?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=mIzIKLXYMAsAX-hOjoB&_nc_ht=scontent.ftun2-2.fna&oh=00_AfBPkt3kjo8mmH5uN88TGxEHhCi3rPIZfc1sGZWYb9sdTQ&oe=646A756C" />
+            </NavLink>
+            <NavLink onClick={Logout}>Log Out</NavLink>
+          
         </>
       ) : (
         <>

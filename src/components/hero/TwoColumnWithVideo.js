@@ -1,9 +1,8 @@
-import  { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 //eslint-disable-next-line
 import { css } from "styled-components/macro";
-
 
 import ReactModalAdapter from "../../helpers/ReactModalAdapter";
 import ResponsiveVideoEmbed from "../../helpers/ResponsiveVideoEmbed";
@@ -33,7 +32,7 @@ const WatchVideoButton = styled.button`
     ${tw`ml-2 font-medium`}
   }
 `;
-const Img = tw.img`mr-8 mb-8`
+const Img = tw.img`mr-8 mb-8`;
 const IllustrationContainer = tw.div`flex justify-center md:justify-end items-center relative max-w-3xl lg:max-w-none`;
 
 // Random Decorator Blobs (shapes that you see in background)
@@ -57,15 +56,15 @@ const StyledModal = styled(ReactModalAdapter)`
 `;
 const CloseModalButton = tw.button`absolute top-0 right-0 mt-8 mr-8 hocus:text-primary-500 border-none`;
 
-const TwoColumnWithVideo= ({
+const TwoColumnWithVideo = ({
   heading = "",
- description="",
-  primaryButtonText="Get Started",
-  primaryButtonUrl="#",
-  watchVideoButtonText="Watch Video",
-  watchVideoYoutubeUrl="https://www.youtube.com/embed/_GuOjXYl5ew",
-  imageSrc=DesignIllustration,
-  imageCss=null,
+  description = "",
+  primaryButtonText = "Get Started",
+  primaryButtonUrl = "#",
+  watchVideoButtonText = "Watch Video",
+  watchVideoYoutubeUrl = "https://www.youtube.com/embed/_GuOjXYl5ew",
+  imageSrc = DesignIllustration,
+  imageCss = null,
   imageDecoratorBlob = true,
 }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -74,14 +73,15 @@ const TwoColumnWithVideo= ({
 
   return (
     <>
-      
       <Container>
         <TwoColumn>
           <LeftColumn>
             <Heading>{heading}</Heading>
             <Paragraph>{description}</Paragraph>
             <Actions>
-              <PrimaryButton as="a" href={primaryButtonUrl}>{primaryButtonText}</PrimaryButton>
+              <PrimaryButton as="a" href={primaryButtonUrl}>
+                {primaryButtonText}
+              </PrimaryButton>
               <WatchVideoButton onClick={toggleModal}>
                 <span className="playIconContainer">
                   <PlayIcon className="playIcon" />
@@ -93,7 +93,7 @@ const TwoColumnWithVideo= ({
           <RightColumn>
             <IllustrationContainer>
               <Img
-                style={{maxWidth:"700px",maxHeight:"470px"}}
+                style={{ maxWidth: "700px", maxHeight: "470px" }}
                 css={imageCss}
                 src={imageSrc}
                 alt="Hero"
@@ -121,4 +121,4 @@ const TwoColumnWithVideo= ({
     </>
   );
 };
-export default TwoColumnWithVideo
+export default TwoColumnWithVideo;

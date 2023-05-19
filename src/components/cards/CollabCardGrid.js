@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -10,7 +10,8 @@ import { ReactComponent as SvgDecoratorBlob1 } from "../../images/svg-decorator-
 import { ReactComponent as SvgDecoratorBlob2 } from "../../images/svg-decorator-blob-7.svg";
 import { Link } from "react-router-dom";
 import ReviewsBar from "../progressCircular/ReviewsBar.js";
-import axios from "axios";
+//use history 
+import { useNavigate } from 'react-router-dom';
 const HeaderRow = tw.div`flex justify-between items-center flex-col xl:flex-row mb-4`;
 const Header = tw(SectionHeading)``;
 const TabsControl = tw.div`flex flex-wrap bg-gray-200 px-2 py-2 rounded leading-none mt-12 pr-0 xl:mt-0 `;
@@ -29,7 +30,7 @@ const TabContent = tw(
 )`mt-0 flex flex-wrap sm:-mr-10 md:-mr-6 lg:-mr-12`;
 const CardContainer = tw.div`mt-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/3 sm:pr-10 md:pr-6 lg:pr-12 `;
 const Card = tw(
-  motion.a
+  motion.div
 )`bg-gray-200 rounded-b block max-w-xs mx-auto sm:max-w-none sm:mx-0 no-underline`;
 const CardImageContainer = styled.div`
   ${(props) =>
@@ -67,58 +68,14 @@ const P = tw.div`text-left items-center self-start mr-4 text-third-200`;
 const Available = tw.div`text-primary-300`;
 const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block italic ml-4`;
 
-const TabCardGrid = ({ heading = "Checkout our collaborations" }) => {
-  const [pistachioCollabs, setPistachioCollabs] = useState([]);
-  const [almondCollabs, setAlmondCollabs] = useState([]);
-  const [LimitedPistachioCollabs, setLimitedPistachioCollabs] = useState([]);
-  const [LimitedAlmondCollabs, setLimitedAlmondCollabs] = useState([]);
-  const [AllCollabs, setAllCollabs] = useState([]);
+const TabCardGrid = ({ heading = "Checkout our collaborations" ,almondCollabs,pistachioCollabs,AllCollabs,limit}) => {
+
   const tabs = {
     All: AllCollabs,
     Pistachio: pistachioCollabs,
     Almond: almondCollabs,
   };
-  
-  const getAllCollaborations = async () => {
-    try {
-      const response = await axios.get("/api/collab");
-      const collaborations = response.data;
-      const collabs = Array.from(collaborations);
-      
-      setAllCollabs(collabs);
-      return collabs;
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  };
-  const filterCardsByType = (cards) => {
-    if (cards.filter((card) => card.ProductType === "pistachio")) {
-      const filtredCards = cards.filter((card) => card.ProductType === "pistachio");
-      const limitedFiltredCards = filtredCards.slice(0, 6);
-
-      setPistachioCollabs(filtredCards);
-      setLimitedPistachioCollabs(limitedFiltredCards);
-    }
-    if (cards.filter((card) => card.ProductType === "almond")) {
-      const filtredCards = cards.filter((card) => card.ProductType === "almond");
-      const limitedFiltredCards = filtredCards.slice(0, 6);
-      setLimitedAlmondCollabs(limitedFiltredCards);
-      setAlmondCollabs(filtredCards);
-    }
-  };
-  useEffect(() => {
-    getAllCollaborations();
-    filterCardsByType(tabs.All);
-    
-  }, [AllCollabs,tabs.All]);
-  //set a 6 limit array to display it
-  const limitedTabs = tabs.All.slice(0, 6);
-  const limited = {
-    All: [limitedTabs],
-    Pistachio: LimitedPistachioCollabs,
-    Almond: LimitedAlmondCollabs,
-  };
+ 
   // Render each tab item here
   // Use item.imageSrc, item.title, item.content, etc.
 
@@ -133,10 +90,12 @@ const TabCardGrid = ({ heading = "Checkout our collaborations" }) => {
   const [activeTab, setActiveTab] = useState(tabsKeys[0]);
   const ControlTab = (tabName) => {
     setActiveTab(tabName);
-    
-    
   };
+  const navigate = useNavigate();
 
+  const handleDetailsClick = (id) => {
+    navigate(`/collab/${id}`);
+  };
   return (
     <Container>
       <ContentWithPaddingXl>
@@ -176,7 +135,7 @@ const TabCardGrid = ({ heading = "Checkout our collaborations" }) => {
             animate={activeTab === tabKey ? "current" : "hidden"}
           >
             {tabs[tabKey].map((card, index) => (
-              
+              index<limit &&
               <CardContainer key={index}>
                 
                 <Card
@@ -209,13 +168,13 @@ const TabCardGrid = ({ heading = "Checkout our collaborations" }) => {
                       <Link to="/profile">
                         <CardButton>join</CardButton>
                       </Link>
-                      <Link to="/collab">
-                        <CardButton>details</CardButton>
-                      </Link>
+                      
+                        <CardButton onClick={() => handleDetailsClick(card._id)}>details</CardButton>
+                      
                     </CardHoverOverlay>
                   </CardImageContainer>
                   <CardText>
-                    <CardTitle>Owner : owner </CardTitle>
+                    <CardTitle>Owner : {card.buyer.fullName}</CardTitle>
                     {/* <CardContent>{card.content}</CardContent> */}
                     <CardContent>
                       Requested Quantity:{" "}
@@ -238,7 +197,9 @@ const TabCardGrid = ({ heading = "Checkout our collaborations" }) => {
             ))}
           </TabContent>
         ))}
+       
       </ContentWithPaddingXl>
+      
       <DecoratorBlob1 />
       <DecoratorBlob2 />
     </Container>

@@ -6,10 +6,10 @@ const Link = tw.a`ml-4 text-primary-300 no-underline flex items-center  text-2xl
 const Center = tw.div`grid items-center justify-center `;
 const P = tw.p`text-sm font-light text-gray-500 dark:text-gray-400 text-end`;
 const A = tw.a`font-medium text-primary-600 hover:underline dark:text-primary-500 hover:text-third-500 `;
-
+const Bg=tw.div`bg-gray-100`
 const FarmerLogin = ({ content }) => {
   return (
-    <div style={{ backgroundColor: "#e2e8f0" }}>
+    <Bg >
       <CssBaseline />
       <Container component={Box} p={4}>
         <Center>
@@ -26,7 +26,7 @@ const FarmerLogin = ({ content }) => {
           already have an account ? <A href="/login"> Sign in</A>
         </P>
       </Container>
-    </div>
+    </Bg>
   );
 };
 

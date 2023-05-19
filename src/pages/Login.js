@@ -79,8 +79,7 @@ export const Login = ({
 }) => {
   const [Email, setEmmail] = useState("");
   const [Password, setPassword] = useState("");
-  const handleFarmerSubmit = async (e) => {
-    
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const buyer = await axios.post("/api/auth/loginBuyer", {
@@ -141,7 +140,7 @@ export const Login = ({
                     type="password"
                     placeholder="Password"
                   />
-                  <SubmitButton onClick={handleFarmerSubmit} type="submit">
+                  <SubmitButton onClick={handleSubmit} type="submit">
                     <SubmitButtonIcon className="icon" />
                     <span className="text">{submitButtonText}</span>
                   </SubmitButton>
