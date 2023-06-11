@@ -17,6 +17,7 @@ import {
   FormProvider,
   useFormContext,
 } from "react-hook-form";
+import axios from "axios";
 
 function getSteps() {
   return [
@@ -194,28 +195,23 @@ const ContactForm = () => {
   }
   //handlephone number
   const [WrongPhone, setWrongPhone] = useState(null);
-  const [WrongAlternate,setWrongAlternate] = useState(null)
+  const [WrongAlternate, setWrongAlternate] = useState(null);
   function isValidTunisianPhoneNumber(phoneNumber) {
     const phone = phoneNumber.target;
     // Regular expression for Tunisian phone number
     const phoneRegex = /^(\+216)?(2|4|5|9)\d{7}$/;
 
     if (phoneRegex.test(phone.value)) {
-      if(phone.name==="phoneNumber"){
+      if (phone.name === "phoneNumber") {
         setWrongPhone(false);
-
+      } else {
+        setWrongAlternate(false);
       }
-      else{
-        setWrongAlternate(false)
-      }
-
     } else {
-      if(phone.name==="phoneNumber"){
+      if (phone.name === "phoneNumber") {
         setWrongPhone(true);
-
-      }
-      else{
-        setWrongAlternate(true)
+      } else {
+        setWrongAlternate(true);
       }
     }
   }
@@ -240,11 +236,7 @@ const ContactForm = () => {
         )}
       />
 
-      {WrongEmail ? (
-        <span style={{ color: "red" }}>invalid Email</span>
-      ) : (
-        <></>
-      )}
+      {WrongEmail ? <span style={{ color: "red" }}>invalid Email</span> : <></>}
       <Controller
         control={control}
         name="phoneNumber"
@@ -279,10 +271,8 @@ const ContactForm = () => {
             margin="normal"
             {...field}
             onBlur={isValidTunisianPhoneNumber}
-
           />
         )}
-        
       />
       {WrongAlternate ? (
         <span style={{ color: "red" }}>invalid phone number</span>
@@ -290,7 +280,6 @@ const ContactForm = () => {
         <></>
       )}
       <pre></pre>
-
     </>
   );
 };
@@ -375,18 +364,19 @@ const PersonalForm = () => {
   //get selected state
   const [state, setState] = useState("TOZEUR");
   const handleSelectedState = (event) => {
+    const state = event;
     //fill in region array by the new state
-    regionByState(event.target.value);
+    regionByState(state);
     //set the new state
-    setState(event.target.value);
+    setState(state);
   };
   //get selected region
   const [selectedRegion, setSelectedRegion] = useState("DEGUECHE");
   const handleSelectedRegion = (event) => {
     //fill in zipcode array by the new region
-    setSelectedRegion(event.target.value);
+    setSelectedRegion(event);
     //set the new region
-    zipcodeByRegion(event.target.value);
+    zipcodeByRegion(event);
   };
   //get selected zipcode
   const [selectedZipCode, setSelectedZipCode] = useState("2214");
@@ -421,12 +411,15 @@ const PersonalForm = () => {
               }}
               value={state}
               label="State"
-              onChange={handleSelectedState}
               {...field}
+              onChange={(e) => {
+                field.onChange(e);
+                handleSelectedState(e.target.value);
+              }}
             >
               {Tunisie.map((value, index) => {
                 return (
-                  <MenuItem key={index} value={value}>
+                  <MenuItem defaultValue="" key={index} value={value}>
                     {value}
                   </MenuItem>
                 );
@@ -458,12 +451,15 @@ const PersonalForm = () => {
               }}
               value={selectedRegion}
               label="Region"
-              onChange={handleSelectedRegion}
               {...field}
+              onChange={(e) => {
+                field.onChange(e);
+                handleSelectedRegion(e.target.value);
+              }}
             >
               {region.map((value, index) => {
                 return (
-                  <MenuItem key={index} value={value}>
+                  <MenuItem defaultValue="" key={index} value={value}>
                     {value}
                   </MenuItem>
                 );
@@ -501,7 +497,7 @@ const PersonalForm = () => {
             >
               {CodePostale.map((value, index) => {
                 return (
-                  <MenuItem key={index} value={value}>
+                  <MenuItem defaultValue="" key={index} value={value}>
                     {value}
                   </MenuItem>
                 );
@@ -583,7 +579,6 @@ function getStepContent(step) {
       return "unknown step";
   }
 }
-
 const LinaerStepper = () => {
   const methods = useForm({
     defaultValues: {
@@ -613,13 +608,39 @@ const LinaerStepper = () => {
 
   const handleNext = (data) => {
     console.log(data);
+
     if (activeStep === steps.length - 1) {
-      fetch("https://jsonplaceholder.typicode.com/comments")
-        .then((data) => data.json())
-        .then((res) => {
-          console.log(res);
-          setActiveStep(activeStep + 1);
-        });
+      const handleRegister = async () => {
+        const firstName = data.firstName;
+        const LastName = data.lastName;
+        const password = data.password;
+        const email = data.emailAddress;
+        const phone = data.phoneNumber;
+        const state = data.state;
+        const region = data.region;
+        const zipcode = data.zipcode;
+
+        try {
+          const response = await axios.post("/api/auth/farmer", {
+            name: firstName,
+            LastName: LastName,
+            email: email,
+            password: password,
+            phone: phone,
+            state: state,
+            zipcode: zipcode,
+            region: region,
+          });
+
+          // Handle successful registration
+          console.log(response.data);
+          window.location.href='/'
+        } catch (error) {
+          // Handle error during registration
+          console.error(error);
+        }
+      };
+      handleRegister(data);
     } else {
       setActiveStep(activeStep + 1);
       setSkippedSteps(
@@ -648,17 +669,18 @@ const LinaerStepper = () => {
         {steps.map((step, index) => {
           const labelProps = {};
           const stepProps = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography
-                variant="caption"
-                align="center"
-                style={{ display: "block" }}
-              >
-                optional
-              </Typography>
-            );
-          }
+          // if (isStepOptional(index)) {
+          //   labelProps.optional = (
+          //     <Typography
+          //       color="error"
+          //       variant="caption"
+          //       align="center"
+          //       style={{ display: "block" }}
+          //     >
+          //       there is an error
+          //     </Typography>
+          //   );
+          // }
           if (isStepSkipped(index)) {
             stepProps.completed = false;
           }

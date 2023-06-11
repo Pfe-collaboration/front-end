@@ -91,19 +91,33 @@ const AppHeader = ({
    * If you manipulate links here, all the styling on the links is already done for you. If you pass links yourself though, you are responsible for styling the links or use the helper styled components that are defined here (NavLink)
    */
   const [farmerloggedin, setFarmerloggedin] = useState(false);
+  const [Buyerloggedin, setBuyerloggedin] = useState(false);
+
   const farmer = JSON.parse(localStorage.getItem("Farmer"));
+  const buyer = JSON.parse(localStorage.getItem("buyer"));
+
   const Logout = () => {
     if (window.confirm("Do you really want to leave?")) {
       localStorage.removeItem("Farmer");
-      window.location.reload();    }
-    
-
+      window.location.reload();
+    }
+  };
+  const Logoutbuyer = () => {
+    if (window.confirm("Do you really want to leave?")) {
+      localStorage.removeItem("buyer");
+      window.location.reload();
+    }
   };
   useEffect(() => {
     if (farmer) {
       setFarmerloggedin(true);
     } else {
       setFarmerloggedin(false);
+    }
+    if (buyer) {
+      setBuyerloggedin(true);
+    } else {
+      setBuyerloggedin(false);
     }
   }, [farmerloggedin]);
   const defaultLinks = [
@@ -125,12 +139,17 @@ const AppHeader = ({
       </NavLink>
       {farmerloggedin ? (
         <>
-          
-            <NavLink to="/profile">
-              <ImgWrapper src="https://scontent.ftun2-2.fna.fbcdn.net/v/t39.30808-6/297860797_3378071792482285_6297438250722114348_n.png?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=mIzIKLXYMAsAX-hOjoB&_nc_ht=scontent.ftun2-2.fna&oh=00_AfBPkt3kjo8mmH5uN88TGxEHhCi3rPIZfc1sGZWYb9sdTQ&oe=646A756C" />
-            </NavLink>
-            <NavLink onClick={Logout}>Log Out</NavLink>
-          
+          <NavLink to="/profile">
+            <ImgWrapper src="https://scontent.ftun2-2.fna.fbcdn.net/v/t39.30808-6/297860797_3378071792482285_6297438250722114348_n.png?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=mIzIKLXYMAsAX-hOjoB&_nc_ht=scontent.ftun2-2.fna&oh=00_AfBPkt3kjo8mmH5uN88TGxEHhCi3rPIZfc1sGZWYb9sdTQ&oe=646A756C" />
+          </NavLink>
+          <NavLink onClick={Logout}>Log Out</NavLink>
+        </>
+      ) : Buyerloggedin ? (
+        <>
+          <NavLink to="/profile">
+            <ImgWrapper src="https://scontent.ftun2-2.fna.fbcdn.net/v/t39.30808-6/297860797_3378071792482285_6297438250722114348_n.png?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=mIzIKLXYMAsAX-hOjoB&_nc_ht=scontent.ftun2-2.fna&oh=00_AfBPkt3kjo8mmH5uN88TGxEHhCi3rPIZfc1sGZWYb9sdTQ&oe=646A756C" />
+          </NavLink>
+          <NavLink onClick={Logoutbuyer}>Log Out</NavLink>
         </>
       ) : (
         <>

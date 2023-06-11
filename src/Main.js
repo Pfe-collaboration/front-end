@@ -51,6 +51,7 @@ const Main = () => {
       setAlmondCollabs(filtredCards);
     }
   };
+  const buyer = JSON.parse(localStorage.getItem("buyer"))
   useEffect(() => {
     getAllCollaborations();
     filterCardsByType(AllCollabs);
@@ -112,6 +113,7 @@ const Main = () => {
           primaryButtonUrl="/profile"
         />
       </AnimationRevealPage>
+      {!buyer&&
       <AnimationRevealPage>
         <TabCardGrid
         limit={3}
@@ -126,7 +128,7 @@ const Main = () => {
         />
         <Link to="/collabs"><CardButton> see more</CardButton></Link>
       </AnimationRevealPage>
-
+    }
       <pre> </pre>
       <Footer />
     </div>

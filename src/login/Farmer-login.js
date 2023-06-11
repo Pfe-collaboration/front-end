@@ -23,6 +23,9 @@ const FarmerLogin = ({ content }) => {
         </Paper>
         <pre></pre>
         <P>
+          Sign up as a buyer? <A href="/signupbuyer"> Sign up</A>
+        </P>
+        <P>
           already have an account ? <A href="/login"> Sign in</A>
         </P>
       </Container>

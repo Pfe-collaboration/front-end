@@ -15,8 +15,8 @@ const Container = tw(
 )`min-h-screen bg-primary-600 text-white font-medium flex justify-center -m-8`;
 const Content = tw.div`max-w-screen-xl m-0 sm:mx-20 sm:my-16 bg-white text-gray-900 shadow sm:rounded-lg flex justify-center flex-1`;
 const MainContainer = tw.div`lg:w-1/2 xl:w-5/12 p-6 sm:p-12`;
-const LogoLink = tw.a``;
-const LogoImage = tw.img`h-12 mx-auto`;
+const LogoLink = tw.a`flex self-center`;
+const LogoImage = tw.img`h-24 mx-auto `;
 const MainContent = tw.div`mt-12 flex flex-col items-center`;
 const Heading = tw.h1`text-2xl xl:text-3xl font-extrabold`;
 const FormContainer = tw.div`w-full flex-1 mt-8`;
@@ -56,77 +56,34 @@ const IllustrationImage = styled.div`
 `;
 const Borderedlink = tw.a`border-b-2 border-t-0 border-r-0 border-l-0 border-gray-500  border-dotted text-primary-500`;
 
-export const Login = ({
+export const SignUp = ({
   logoLinkUrl = "#",
   illustrationImageSrc = illustration,
-  headingText = "Sign In to Bio market",
+  headingText = "Create an account and join Bio market",
   socialButtons = [
     {
       iconImageSrc: googleIconImageSrc,
-      text: "Sign In With Google",
+      text: "Sign up With Google",
       url: "https://google.com",
     },
     {
       iconImageSrc: twitterIconImageSrc,
-      text: "Sign In With Twitter",
+      text: "Sign up With Twitter",
       url: "https://twitter.com",
     },
   ],
-  submitButtonText = "Sign In",
+  submitButtonText = "Sign up",
   SubmitButtonIcon = LoginIcon,
   forgotPasswordUrl = "#",
-  signupUrl = "/signupbuyer",
+  signupUrl = "/login",
 }) => {
   const [Email, setEmmail] = useState("");
   const [Password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
-  //handle submit function
-  const [Loading, setLoading] = useState(true);
-  const handleLoginSubmit = async (e) => {
-    setLoading(true);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(Email, Password);
-    try {
-      // Try logging in as a buyer
-      const buyerResponse = await axios.post("/api/auth/loginBuyer", {
-        emailOrPhone: Email,
-        password: Password,
-      });
-
-      const buyer = buyerResponse.data;
-      localStorage.setItem("token", buyer.token);
-      localStorage.setItem("buyer", JSON.stringify(buyer));
-      console.log(buyer._id);
-
-      // Redirect the user to the protected route
-      setLoading(false);
-      window.location.href = "/";
-    } catch (buyerError) {
-      try {
-        // If login as a buyer fails, try logging in as a farmer
-        const farmerResponse = await axios.post("/api/auth/loginFarmer", {
-          email: Email,
-          password: Password,
-        });
-
-        const farmer = farmerResponse.data.farmer;
-        const token = farmerResponse.data.token;
-        console.log(token);
-        localStorage.setItem("token", token);
-        localStorage.setItem("Farmer", JSON.stringify(farmer));
-
-        console.log(farmer._id);
-
-        // Redirect the user to the protected route
-        setLoading(false);
-        window.location.href = "/";
-      } catch (farmerError) {
-        // If both login attempts fail, show an error message
-        setError("Incorrect login or password");
-        console.error(farmerError);
-      }
-    }
+    
   };
   return (
     <AnimationRevealPage>
@@ -139,6 +96,48 @@ export const Login = ({
             <MainContent>
               <Heading>{headingText}</Heading>
               <FormContainer>
+                <Form>
+                <Input
+                    //onChange={(e) => setEmmail(e.target.value)}
+                    name="name"
+                    type="name"
+                    placeholder="Full Name"
+                  />
+                  <Input
+                    onChange={(e) => setEmmail(e.target.value)}
+                    name="email"
+                    type="email"
+                    placeholder="Email or phone"
+                  />
+                  <Input
+                    //onChange={(e) => setEmmail(e.target.value)}
+                    name="address"
+                    type="address"
+                    placeholder="Enter your spésific address"
+                  />
+                  <Input
+                    onChange={(e) => setPassword(e.target.value)}
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                  />
+                  <Input
+                    //onChange={(e) => setPassword(e.target.value)}
+                    name="password"
+                    type="password"
+                    placeholder="repeat your Password"
+                  />
+                  <SubmitButton onClick={handleSubmit} type="submit">
+                    <SubmitButtonIcon className="icon" />
+                    <span className="text">{submitButtonText}</span>
+                  </SubmitButton>
+                  {error && <div style={{color:"red"}}>{error}</div>}
+                  {msg && <div style={{color:"green"}}>{msg}</div>}
+                </Form>
+                <DividerTextContainer>
+                  <DividerText>Or Sign up with your e-mail</DividerText>
+                </DividerTextContainer>
+                <pre></pre>
                 <SocialButtonsContainer>
                   {socialButtons.map((socialButton, index) => (
                     <SocialButton key={index} href={socialButton.url}>
@@ -153,38 +152,13 @@ export const Login = ({
                     </SocialButton>
                   ))}
                 </SocialButtonsContainer>
-                <DividerTextContainer>
-                  <DividerText>Or Sign in with your e-mail</DividerText>
-                </DividerTextContainer>
-                <pre> </pre>
-                <Form>
-                  <Input
-                    onChange={(e) => setEmmail(e.target.value)}
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                  />
-                  <Input
-                    onChange={(e) => setPassword(e.target.value)}
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                  />
-                  <SubmitButton onClick={handleLoginSubmit} type="submit">
-                    <SubmitButtonIcon className="icon" />
-                    <span className="text">{submitButtonText}</span>
-                  </SubmitButton>
-                  {error && <div style={{ color: "red" }}>{error}</div>}
-                  {msg && <div style={{ color: "green" }}>{msg}</div>}
-                </Form>
-                <p tw="mt-6 text-xs text-gray-600 text-center">
-                  <Borderedlink href={forgotPasswordUrl}>
-                    Forgot Password ?
-                  </Borderedlink>
+                <p tw="mt-8 text-sm text-gray-600 text-center">
+                  already have an account?{" "}
+                  <Borderedlink href={signupUrl}>Sign in</Borderedlink>
                 </p>
                 <p tw="mt-8 text-sm text-gray-600 text-center">
-                  Dont have an account?{" "}
-                  <Borderedlink href={signupUrl}>Sign Up</Borderedlink>
+                  create a farmer account?{" "}
+                  <Borderedlink href="/signup">Sign up as a farmer</Borderedlink>
                 </p>
               </FormContainer>
             </MainContent>

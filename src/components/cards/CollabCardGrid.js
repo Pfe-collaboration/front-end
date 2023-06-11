@@ -10,8 +10,8 @@ import { ReactComponent as SvgDecoratorBlob1 } from "../../images/svg-decorator-
 import { ReactComponent as SvgDecoratorBlob2 } from "../../images/svg-decorator-blob-7.svg";
 import { Link } from "react-router-dom";
 import ReviewsBar from "../progressCircular/ReviewsBar.js";
-//use history 
-import { useNavigate } from 'react-router-dom';
+//use history
+import { useNavigate } from "react-router-dom";
 const HeaderRow = tw.div`flex justify-between items-center flex-col xl:flex-row mb-4`;
 const Header = tw(SectionHeading)``;
 const TabsControl = tw.div`flex flex-wrap bg-gray-200 px-2 py-2 rounded leading-none mt-12 pr-0 xl:mt-0 `;
@@ -68,14 +68,19 @@ const P = tw.div`text-left items-center self-start mr-4 text-third-200`;
 const Available = tw.div`text-primary-300`;
 const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block italic ml-4`;
 
-const TabCardGrid = ({ heading = "Checkout our collaborations" ,almondCollabs,pistachioCollabs,AllCollabs,limit}) => {
-
+const TabCardGrid = ({
+  heading = "Checkout our collaborations",
+  almondCollabs,
+  pistachioCollabs,
+  AllCollabs,
+  limit,
+}) => {
   const tabs = {
     All: AllCollabs,
     Pistachio: pistachioCollabs,
     Almond: almondCollabs,
   };
- 
+
   // Render each tab item here
   // Use item.imageSrc, item.title, item.content, etc.
 
@@ -134,72 +139,85 @@ const TabCardGrid = ({ heading = "Checkout our collaborations" ,almondCollabs,pi
             initial={activeTab === tabKey ? "current" : "hidden"}
             animate={activeTab === tabKey ? "current" : "hidden"}
           >
-            {tabs[tabKey].map((card, index) => (
-              index<limit &&
-              <CardContainer key={index}>
-                
-                <Card
-                  className="group"
-                  initial="rest"
-                  whileHover="hover"
-                  animate="rest"
-                >
-                  <CardImageContainer imageSrc={card.ProductType==="pistachio"?"https://5.imimg.com/data5/SELLER/Default/2021/5/SB/YW/AS/88400203/california-pistachios-500x500.jpg":"https://www.foodandwine.com/thmb/fZ1mdpfjIcerIuFyodBCBQTSMbo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/CA-Almond-Surplus-FT-BLOG0722-2000-081a61cde398431aba1b4614a168a7c8.jpg"}>
-                    <CardRatingContainer>
-                      <CardRating>
-                        {/* <StarIcon /> */}
-                        {card.ProductType}
-                      </CardRating>
-                      {/* <CardReview>({card.reviews})</CardReview> */}
-                    </CardRatingContainer>
-                    <CardHoverOverlay
-                      variants={{
-                        hover: {
-                          opacity: 1,
-                          height: "auto",
-                        },
-                        rest: {
-                          opacity: 0,
-                          height: 0,
-                        },
-                      }}
-                      transition={{ duration: 0.3 }}
+            {tabs[tabKey].map(
+              (card, index) =>
+                index < limit && (
+                  <CardContainer key={index}>
+                    <Card
+                      className="group"
+                      initial="rest"
+                      whileHover="hover"
+                      animate="rest"
                     >
-                      <Link to="/profile">
-                        <CardButton>join</CardButton>
-                      </Link>
-                      
-                        <CardButton onClick={() => handleDetailsClick(card._id)}>details</CardButton>
-                      
-                    </CardHoverOverlay>
-                  </CardImageContainer>
-                  <CardText>
-                    <CardTitle>Owner : {card.buyer.fullName}</CardTitle>
-                    {/* <CardContent>{card.content}</CardContent> */}
-                    <CardContent>
-                      Requested Quantity:{" "}
-                      <HighlightedText> {card.RequestedQT} Kg </HighlightedText>
-                    </CardContent>
-                    <Div>
-                      <P>
-                        Available Quantity: <br></br>{" "}
-                        <Available>
-                          {card.availableQT }
-                          Kg
-                        </Available>
-                      </P>
-                      <ReviewsBar score={(card.availableQT*100/card.RequestedQT).toFixed(0)} />
-                    </Div>
-                  </CardText>
-                </Card>
-                <pre> </pre>
-              </CardContainer>
-            ))}
+                      <CardImageContainer
+                        imageSrc={
+                          card.ProductType === "pistachio"
+                            ? "https://5.imimg.com/data5/SELLER/Default/2021/5/SB/YW/AS/88400203/california-pistachios-500x500.jpg"
+                            : "https://www.foodandwine.com/thmb/fZ1mdpfjIcerIuFyodBCBQTSMbo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/CA-Almond-Surplus-FT-BLOG0722-2000-081a61cde398431aba1b4614a168a7c8.jpg"
+                        }
+                      >
+                        <CardRatingContainer>
+                          <CardRating>
+                            {/* <StarIcon /> */}
+                            {card.ProductType}
+                          </CardRating>
+                          {/* <CardReview>({card.reviews})</CardReview> */}
+                        </CardRatingContainer>
+                        <CardHoverOverlay
+                          variants={{
+                            hover: {
+                              opacity: 1,
+                              height: "auto",
+                            },
+                            rest: {
+                              opacity: 0,
+                              height: 0,
+                            },
+                          }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <CardButton
+                            onClick={() => handleDetailsClick(card._id)}
+                          >
+                            details
+                          </CardButton>
+                        </CardHoverOverlay>
+                      </CardImageContainer>
+                      <CardText>
+                        <CardTitle>Owner : {card.buyer.fullName}</CardTitle>
+                        {/* <CardContent>{card.content}</CardContent> */}
+                        <CardContent>
+                          Requested Quantity:{" "}
+                          <HighlightedText>
+                            {" "}
+                            {card.RequestedQT} Kg{" "}
+                          </HighlightedText>
+                        </CardContent>
+                        <Div>
+                          <P>
+                            Available Quantity: <br></br>{" "}
+                            <Available>
+                              {card.availableQT}
+                              Kg
+                            </Available>
+                          </P>
+                          <ReviewsBar
+                            score={(
+                              (card.availableQT * 100) /
+                              card.RequestedQT
+                            ).toFixed(0)}
+                          />
+                        </Div>
+                      </CardText>
+                    </Card>
+                    <pre> </pre>
+                  </CardContainer>
+                )
+            )}
           </TabContent>
         ))}
-       
       </ContentWithPaddingXl>
-      
+
       <DecoratorBlob1 />
       <DecoratorBlob2 />
     </Container>

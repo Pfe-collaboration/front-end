@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -72,7 +72,7 @@ const ThreeCredsSlider = ({ Farmers, FarmersNames, Quantities }) => {
   const [sliderRef, setSliderRef] = useState(null);
   const sliderSettings = {
     arrows: false,
-    slidesToShow: 3,
+    slidesToShow: Farmers.length < 3 ? 1 : 3,
     responsive: [
       {
         breakpoint: 1280,

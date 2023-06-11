@@ -1,6 +1,6 @@
 import React from "react";
 import tw, { styled } from "twin.macro";
-const Relative = tw.div`relative pt-1`;
+const Relative = tw.div`relative pt-1 lg:ml-72 lg:mr-72`;
 const OverflowHidden = tw.div`overflow-hidden h-2 mb-4 text-xs flex rounded bg-primary-600`;
 const ProgressBar = styled.div(({ value }) => [
     tw`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center`,
@@ -8,6 +8,8 @@ const ProgressBar = styled.div(({ value }) => [
   ]);const ProgressLabel = tw.div`flex justify-between text-xs text-gray-500`;
 
 const Progress = ({ value, label }) => {
+  const number = parseFloat(value)
+  const RoundedValue =number.toFixed(1)
   return (
     <Relative>
       <OverflowHidden>
@@ -15,7 +17,7 @@ const Progress = ({ value, label }) => {
       </OverflowHidden>
       <ProgressLabel>
         <span>{label}</span>
-        <span>{value}%</span>
+        <span>{RoundedValue}%</span>
       </ProgressLabel>
     </Relative>
   );

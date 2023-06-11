@@ -44,7 +44,7 @@ export const SigninFarmer = () => {
       const farmer = res.data.farmer;
       console.log(token);
       localStorage.setItem("token", token);
-      localStorage.setItem('Farmer', JSON.stringify(farmer));
+      localStorage.setItem("Farmer", JSON.stringify(farmer));
 
       console.log(farmer._id);
       // redirect the user to the protected route
@@ -58,13 +58,69 @@ export const SigninFarmer = () => {
   const handleBuyerSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/auth/loginBuyer", { email, password });
-      localStorage.setItem("token", res.data.token);
-      console.log("logged in");
+      const buyer = await axios.post("/api/auth/loginBuyer", {
+        emailOrPhone: email,
+        password: password,
+      });
+
+      console.log(buyer.data);
+      localStorage.setItem("token", buyer.data.token);
+      console.log(buyer.data.token);
+
+      localStorage.setItem("buyer", JSON.stringify(buyer));
+
+      console.log(buyer.data.buyer._id);
       // redirect the user to the protected route
       window.location.href = "/";
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  //try one function
+  const handleLoginSubmit = async (e) => {
+    setLoading(true);
+    e.preventDefault();
+
+    try {
+      // Try logging in as a buyer
+      const buyerResponse = await axios.post("/api/auth/loginBuyer", {
+        emailOrPhone: email,
+        password: password,
+      });
+
+      const buyer = buyerResponse.data;
+      localStorage.setItem("token", buyer.token);
+      localStorage.setItem("buyer", JSON.stringify(buyer));
+      console.log(buyer._id);
+
+      // Redirect the user to the protected route
+      setLoading(false);
+      window.location.href = "/";
+    } catch (buyerError) {
+      try {
+        // If login as a buyer fails, try logging in as a farmer
+        const farmerResponse = await axios.post("/api/auth/loginFarmer", {
+          email,
+          password,
+        });
+
+        const farmer = farmerResponse.data.farmer;
+        const token = farmerResponse.data.token;
+        console.log(token);
+        localStorage.setItem("token", token);
+        localStorage.setItem("Farmer", JSON.stringify(farmer));
+
+        console.log(farmer._id);
+
+        // Redirect the user to the protected route
+        setLoading(false);
+        window.location.href = "/";
+      } catch (farmerError) {
+        // If both login attempts fail, show an error message
+        setError("Incorrect login or password");
+        console.error(farmerError);
+      }
     }
   };
 
@@ -149,7 +205,7 @@ export const SigninFarmer = () => {
                 <Button
                   disabled={loading}
                   type="submit"
-                  onClick={isFarmer ? handleFarmerSubmit : handleBuyerSubmit}
+                  onClick={ handleLoginSubmit}
                 >
                   Sign in
                 </Button>

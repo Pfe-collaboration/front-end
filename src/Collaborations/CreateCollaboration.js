@@ -8,14 +8,13 @@ import axios from "axios";
 
 const Container = tw(
   ContainerBase
-)`min-h-screen bg-gray-200 text-white font-medium flex justify-center -m-8`;
+)`min-h-screen  text-white font-medium flex justify-center -m-8`;
 const Content = tw.div`max-w-screen-lg m-0 sm:mx-20 sm:my-16 bg-white text-gray-900 shadow sm:rounded-lg flex justify-center flex-1`;
 const MainContainer = tw.div`lg:w-1/2 xl:w-5/12 p-6 sm:p-12`;
 const LogoLink = tw.a``;
 const LogoImage = tw.img`h-32 ml-20`;
 const MainContent = tw.div` flex flex-col items-center`;
 const FormContainer = tw.div`w-full flex-1 mt-8`;
-
 const Form = tw.form`mx-auto max-w-xs `;
 const InputSelect = tw.select`
 w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 
@@ -43,21 +42,33 @@ const CreateCollaboration = () => {
   const [ProductType, setProductType] = useState("");
   const [RequestedQT, setRequestedQT] = useState(0);
   const [Description, setDescription] = useState("");
-
+ 
   const createCollab = async (e) => {
     e.preventDefault();
     try {
-      const buyer = JSON.parse(localStorage.getItem("buyer"));
-      console.log(buyer.data.buyer._id);
-      const response = await axios.post("/api/collab", {
-        ProductType:ProductType,
-        RequestedQT:RequestedQT,
-        description:Description,
-        buyerId: buyer.data.buyer._id,
-      });
+      const buyer = JSON.parse(localStorage.getItem("buyer"))
+      console.log(buyer.buyer)
+      if(buyer.buyer && buyer.buyer._id){
+        const buyerId=buyer.buyer._id;
+        const response = await axios.post("/api/collab", {
+          ProductType:ProductType,
+          RequestedQT:RequestedQT,
+          description:Description,
+          buyerId: buyerId,
+        });
+        
+        // Handle the response as needed
+        window.location.reload()
+        console.log(response.data);
+      }
+      else {
+        const checkbox = document.getElementById("check");
+        if (checkbox) {
+          checkbox.checked = false;
+        }
 
-      // Handle the response as needed
-      console.log(response.data);
+        window.location.href = "/loginbuyer";
+      }
     } catch (error) {
       console.error(error);
     }
@@ -68,9 +79,7 @@ const CreateCollaboration = () => {
         <Container>
           <Content>
             <MainContainer>
-              <LogoLink href="/">
-                <LogoImage src={logo} />
-              </LogoLink>
+              
               <MainContent>
                 <FormContainer>
                   <pre> </pre>
@@ -98,11 +107,11 @@ const CreateCollaboration = () => {
                       type="text"
                       placeholder="Description"
                     />
-                    <Check type="checkbox" />
+                    <Check id="check" type="checkbox" />
                     <Borderedlink href="/">
                       accept creating collaboration policy
                     </Borderedlink>
-                    <SubmitButton onClick={createCollab}>
+                    <SubmitButton onClick={createCollab} >
                       <span className="text">Create</span>
                     </SubmitButton>
                   </Form>

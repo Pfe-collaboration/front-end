@@ -26,6 +26,7 @@ import PopUp from "./helpers/PopUp";
 import Footer from "./footer/footer";
 import LinaerStepper from "./login/LinearStepper";
 import Stepper from "./login/logins/Stepper";
+import { SignUp } from "./pages/SignUp";
 //import TwoCard from "./components/cards/PortfolioTwoCardsWithImage";
 
 //
@@ -63,7 +64,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 1000);
   }, [loading]);
 
   return (
@@ -119,7 +120,7 @@ function App() {
             path="/signUp"
             element={<FarmerLogin content={content} />}
           ></Route>
-          <Route path="/login" element={<SigninFarmer />}></Route>
+          <Route path="/login" element={<Login />}></Route>
           <Route
             path="/"
             element={
@@ -150,11 +151,11 @@ function App() {
               </>
             }
           ></Route>
-          <Route
-            path="/loginbuyer"
+           <Route
+            path="/signupbuyer"
             element={
               <>
-                <Login />
+                <SignUp />
               </>
             }
           ></Route>

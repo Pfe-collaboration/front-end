@@ -5,7 +5,6 @@ import { PrimaryButton } from "../components/misc/Buttons";
 import { SectionHeading } from "../components/misc/Headings";
 import ReactModalAdapter from "../helpers/ReactModalAdapter";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
-import ResponsiveVideoEmbed from "../helpers/ResponsiveVideoEmbed";
 
 import AnimationRevealPage from "../helpers/AnimationRevealPage";
 import styled from "styled-components";
@@ -13,13 +12,12 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import JoinForm from "../components/forms/JoinForm";
 import ProgressBarr from "../components/progressCircular/ProgressBar";
 const Div = tw.div`flex justify-center mt-4 lg:flex-row flex-col`;
 const ButtonContainer = tw.div`flex justify-start mt-12`;
 const Heading = tw(SectionHeading)``;
 const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block italic `;
-const DescriptionDiv = tw.div`inline-block mt-8 ml-4 text-black`;
+const DescriptionDiv = tw.div`inline-block mt-8 ml-16 text-black`;
 const StyledModal = styled(ReactModalAdapter)`
   &.mainHeroModal__overlay {
     ${tw`fixed inset-0 z-50`}
@@ -52,10 +50,10 @@ const StartPageContainer = tw.div`
   flex flex-col items-start
      p-10 ml-12
 `;
-const Subheading = tw.span`tracking-wider text-sm font-medium`;
+const Subheading = tw.span`tracking-wider text-sm font-medium `;
 const Borderedlink = tw.a`ml-2 border-b-2 border-t-0 border-r-0 border-l-0 border-gray-500  border-dotted text-primary-500 cursor-pointer`;
 
-const Bg = tw.div`bg-gray-100 w-full px-4 py-4 `;
+const Bg = tw.div`  px-4 py-4 `;
 const CollaborationDetails = () => {
   const { collabId } = useParams();
   const [collab, setCollab] = useState(null);
@@ -92,17 +90,17 @@ const CollaborationDetails = () => {
         setQuantities(quantities);
         setType(response.data.ProductType);
         const farmerNames = [];
-        const Farmers = []
+        const Farmers = [];
         for (const participant of response.data.participants) {
           const farmerResponse = await axios.get(
             `http://localhost:8800/api/farmers/${participant.farmer}`
           );
           const farmer = farmerResponse.data;
-          Farmers.push(farmer)
+          Farmers.push(farmer);
           farmerNames.push(farmer.name + "" + farmer.LastName);
         }
         setFarmersNames(farmerNames);
-        setFarmers(Farmers)
+        setFarmers(Farmers);
         return response.data;
       } catch (error) {
         // Handle error
@@ -112,47 +110,58 @@ const CollaborationDetails = () => {
     }
   };
   //get the logged in farmerId
-  const farmerId = JSON.parse(localStorage.getItem("Farmer"))._id;
-
+  const [FarmerLoggedIn, setFarmerLoggedIn] = useState(null);
+  const getFarmer = () => {
+    const farmerId = JSON.parse(localStorage.getItem("Farmer"))._id;
+    if (farmerId) {
+      setFarmerLoggedIn(true);
+      return farmerId;
+    } else {
+      setFarmerLoggedIn(false);
+      return "";
+    }
+  };
 
   //
-const handleJoin=()=>{
-  
-  setModalIsOpen(true) 
-}
+  const handleJoin = () => {
+    setModalIsOpen(true);
+  };
 
   //
   const participateInCollab = async () => {
-    
     if (Quantity > RequestedQT - availableQT) {
-      console.log("akber")
+      console.log("akber");
       toggleModal();
       SecondtoggleModal();
     } else {
       try {
-        const response = await axios.post("/api/collab/participate", {
-          collabId: collabId,
-          farmerId: farmerId,
-          quantity: Quantity,
-        });
+        const farmerData = JSON.parse(localStorage.getItem("Farmer"));
+        if (farmerData && farmerData._id) {
+          const farmerId = farmerData._id;
+          // Rest of your code here
+          // ...
 
-        try {
-          const response = await axios.put(
-            `/api/collab/updateCollab/${collabId}`,
-            { Quantity: Quantity }
-          );
+          const response = await axios.post("/api/collab/participate", {
+            collabId: collabId,
+            farmerId: farmerId,
+            quantity: Quantity,
+          });
+
+          const res = await axios.put(`/api/collab/updateCollab/${collabId}`, {
+            Quantity: Quantity,
+          });
           console.log(Quantity);
           toggleModal();
           document.getElementById("prdctqt").value = "";
-          return response.data;
-        } catch (error) {
-          // Handle error
-          console.error(error);
-          throw error;
-        }
+          return res.data;
+        } else {
+          const checkbox = document.getElementById("check");
+          if (checkbox) {
+            checkbox.checked = false;
+          }
 
-        // Handle the response or perform any necessary actions
-        console.log("Participation saved:", response.data);
+          window.location.href = "/login";
+        }
       } catch (error) {
         // Handle errors appropriately
         console.error("Error participating in collaboration:", error);
@@ -160,9 +169,9 @@ const handleJoin=()=>{
     }
   };
   const BackToModal = () => {
-    const remain = parseFloat(RequestedQT - availableQT) 
-    document.getElementById("prdctqt").value =  remain ;
-    setQuantity(remain)
+    const remain = parseFloat(RequestedQT - availableQT);
+    document.getElementById("prdctqt").value = remain;
+    setQuantity(remain);
     SecondtoggleModal();
   };
 
@@ -178,9 +187,8 @@ const handleJoin=()=>{
           <Bg>
             <div>
               <Heading>
-                <HighlightedText>{type}</HighlightedText>Collaboration
+                <HighlightedText>{type}</HighlightedText>Collaboration ({RequestedQT} Kg)
               </Heading>
-
               <DescriptionDiv>{Description}</DescriptionDiv>
               <StartPageContainer>
                 <Subheading>
@@ -196,41 +204,51 @@ const handleJoin=()=>{
                 />
                 <div>
                   <Check
+                    id="check"
                     onClick={() => setAcceptedTerms(!AcceptedTerms)}
                     type="checkbox"
                   />
                   <Borderedlink>accept terms</Borderedlink>
                 </div>
                 <ButtonContainer>
-                  <PrimaryButton
-                    disabled={AcceptedTerms}
-                    onClick={ handleJoin }
-                  >
+                  <PrimaryButton disabled={AcceptedTerms} onClick={handleJoin}>
                     Join Collaboration
                   </PrimaryButton>
                 </ButtonContainer>
               </StartPageContainer>
             </div>
           </Bg>
-          <Bg>
-            <Subheading></Subheading>
-            <Donutchart
-              Quantities={Quantities}
-              Farmers={FarmersNames}
-              collab={collab}
-            />
-          </Bg>
+          {Quantities.length > 0 && (
+            <Bg>
+              <Subheading></Subheading>
+              <Donutchart
+                Quantities={Quantities}
+                Farmers={FarmersNames}
+                collab={collab}
+              />
+            </Bg>
+          )}
         </Div>
-        <Bg>
-          <ProgressBarr
-            value={((availableQT * 100) / RequestedQT).toString()}
-            label="completed"
+
+        <ProgressBarr
+          value={((availableQT * 100) / RequestedQT).toString()}
+          label="completed"
+        />
+      </AnimationRevealPage>
+      {Quantities.length > 0 ? (
+        <AnimationRevealPage>
+          <ThreeCredsSlider
+            Farmers={Farmers}
+            FarmersNames={FarmersNames}
+            Quantities={Quantities}
           />
-        </Bg>
-      </AnimationRevealPage>
-      <AnimationRevealPage>
-        <ThreeCredsSlider Farmers={Farmers} FarmersNames={FarmersNames} Quantities={Quantities}/>
-      </AnimationRevealPage>
+        </AnimationRevealPage>
+      ) : (
+        <Subheading>
+          {" "}
+          No one joined this collaboration yet please fill in the form to be the first one 
+        </Subheading>
+      )}
       <StyledModal
         closeTimeoutMS={300}
         className="mainHeroModal"
@@ -269,8 +287,9 @@ const handleJoin=()=>{
           <CloseIcon tw="w-6 h-6" />
         </CloseModalButton>
         <div className="content">
-          you are trying to participate with a higher quality than it's remaining! 
-          you can participate with {RequestedQT - availableQT+" "} as maximum 
+          you are trying to participate with a higher quality than it's
+          remaining! you can participate with {RequestedQT - availableQT + " "}{" "}
+          as maximum
           <AcceptButton onClick={BackToModal}>okey</AcceptButton>
         </div>
       </SecondStyledModal>
