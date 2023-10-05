@@ -20,12 +20,7 @@ import {
 import axios from "axios";
 
 function getSteps() {
-  return [
-    "Basic information",
-    "Contact Information",
-    "Address Information",
-    "Payment",
-  ];
+  return ["Basic information", "Contact Information", "Address Information"];
 }
 const BasicForm = () => {
   const { control } = useFormContext();
@@ -511,58 +506,6 @@ const PersonalForm = () => {
     </>
   );
 };
-const PaymentForm = () => {
-  const { control } = useFormContext();
-  return (
-    <>
-      <Controller
-        control={control}
-        name="cardNumber"
-        render={({ field }) => (
-          <TextField
-            id="cardNumber"
-            label="Card Number"
-            variant="outlined"
-            placeholder="Enter Your Card Number"
-            fullWidth
-            margin="normal"
-            {...field}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="cardMonth"
-        render={({ field }) => (
-          <TextField
-            id="cardMonth"
-            label="Card Month"
-            variant="outlined"
-            placeholder="Enter Your Card Month"
-            fullWidth
-            margin="normal"
-            {...field}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="cardYear"
-        render={({ field }) => (
-          <TextField
-            id="cardYear"
-            label="Card Year"
-            variant="outlined"
-            placeholder="Enter Your Card Year"
-            fullWidth
-            margin="normal"
-            {...field}
-          />
-        )}
-      />
-    </>
-  );
-};
 
 function getStepContent(step) {
   switch (step) {
@@ -573,8 +516,6 @@ function getStepContent(step) {
       return <ContactForm />;
     case 2:
       return <PersonalForm />;
-    case 3:
-      return <PaymentForm />;
     default:
       return "unknown step";
   }
@@ -634,7 +575,10 @@ const LinaerStepper = () => {
 
           // Handle successful registration
           console.log(response.data);
-          window.location.href='/'
+          const buyer = response.data;
+          localStorage.setItem("token", buyer.token);
+          localStorage.setItem("buyer", JSON.stringify(buyer));
+          window.location.href = "/";
         } catch (error) {
           // Handle error during registration
           console.error(error);

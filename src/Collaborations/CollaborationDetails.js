@@ -15,6 +15,8 @@ import { useEffect, useState } from "react";
 import ProgressBarr from "../components/progressCircular/ProgressBar";
 const Div = tw.div`flex justify-center mt-4 lg:flex-row flex-col`;
 const ButtonContainer = tw.div`flex justify-start mt-12`;
+const PersonaliseContainer = tw.div`flex justify-center mt-12`;
+
 const Heading = tw(SectionHeading)``;
 const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block italic `;
 const DescriptionDiv = tw.div`inline-block mt-8 ml-16 text-black`;
@@ -51,6 +53,8 @@ const StartPageContainer = tw.div`
      p-10 ml-12
 `;
 const Subheading = tw.span`tracking-wider text-sm font-medium `;
+const Personalised = tw.span` text-lg font-medium mt-12`;
+
 const Borderedlink = tw.a`ml-2 border-b-2 border-t-0 border-r-0 border-l-0 border-gray-500  border-dotted text-primary-500 cursor-pointer`;
 
 const Bg = tw.div`  px-4 py-4 `;
@@ -66,6 +70,8 @@ const CollaborationDetails = () => {
   const [Farmers, setFarmers] = useState(new Set());
 
   const [Quantity, setQuantity] = useState(0);
+  const [AddedQuantity, setAddedQuantity] = useState(0);
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [SecondmodalIsOpen, setSecondModalIsOpen] = useState(false);
 
@@ -111,13 +117,32 @@ const CollaborationDetails = () => {
   };
   //get the logged in farmerId
   const [FarmerLoggedIn, setFarmerLoggedIn] = useState(null);
+  //get the logged in buyer id
+  const [BuyerLoggedIn, setBuyerLoggedIn] = useState(null);
+
+  //get farmer from local storage
+  const farmer = JSON.parse(localStorage.getItem("Farmer"));
+  //get buyer from local storage
+  const buyer = JSON.parse(localStorage.getItem("buyer"));
+  //set logged in farmer
   const getFarmer = () => {
-    const farmerId = JSON.parse(localStorage.getItem("Farmer"))._id;
-    if (farmerId) {
+    const farmerId = farmer._id;
+    if (farmer && farmerId) {
       setFarmerLoggedIn(true);
       return farmerId;
     } else {
       setFarmerLoggedIn(false);
+      return "";
+    }
+  };
+  //set logged in buyer
+  const getBuyer = () => {
+    const buyerId = buyer.buyer._id;
+    if (buyer && buyer.buyer && buyerId) {
+      setBuyerLoggedIn(true);
+      return buyerId;
+    } else {
+      setBuyerLoggedIn(false);
       return "";
     }
   };
@@ -168,6 +193,23 @@ const CollaborationDetails = () => {
       }
     }
   };
+  const IncreaseRequestedQuantity = async () => {
+    if (AddedQuantity > 0) {
+      try {
+        const response = await axios.put(
+          `/api/collab/updateRequestCollab/${collabId}`,
+          {
+            quantity: AddedQuantity,
+          }
+        );
+        console.log(response);
+        alert("you have successfully added " + { AddedQuantity } + "kg");
+        window.location.reload();
+      } catch (error) {}
+    } else {
+      console.log("maha2ah");
+    }
+  };
   const BackToModal = () => {
     const remain = parseFloat(RequestedQT - availableQT);
     document.getElementById("prdctqt").value = remain;
@@ -176,6 +218,11 @@ const CollaborationDetails = () => {
   };
 
   useEffect(() => {
+    if (farmer) {
+      getFarmer();
+    } else if (buyer && buyer.buyer) {
+      getBuyer();
+    }
     if (collabId) {
       getCollaboration(collabId);
     }
@@ -187,35 +234,81 @@ const CollaborationDetails = () => {
           <Bg>
             <div>
               <Heading>
-                <HighlightedText>{type}</HighlightedText>Collaboration ({RequestedQT} Kg)
+                <HighlightedText>{type}</HighlightedText>Collaboration (
+                {RequestedQT} Kg)
               </Heading>
               <DescriptionDiv>{Description}</DescriptionDiv>
-              <StartPageContainer>
-                <Subheading>
-                  Enter your available quantity and join the collaboration!
-                </Subheading>
-                <Input
-                  onChange={(e) => setQuantity(e.target.value)}
-                  name="productQuantity "
-                  id="prdctqt"
-                  type="number"
-                  placeholder="Quantity"
-                  max={RequestedQT - availableQT}
-                />
-                <div>
-                  <Check
-                    id="check"
-                    onClick={() => setAcceptedTerms(!AcceptedTerms)}
-                    type="checkbox"
+              {FarmerLoggedIn ? (
+                <StartPageContainer>
+                  <Subheading>
+                    Enter your available quantity and join the collaboration!
+                  </Subheading>
+                  <Input
+                    onChange={(e) => setQuantity(e.target.value)}
+                    name="productQuantity "
+                    id="prdctqt"
+                    type="number"
+                    placeholder="Quantity"
+                    max={RequestedQT - availableQT}
                   />
-                  <Borderedlink>accept terms</Borderedlink>
-                </div>
-                <ButtonContainer>
-                  <PrimaryButton disabled={AcceptedTerms} onClick={handleJoin}>
-                    Join Collaboration
-                  </PrimaryButton>
-                </ButtonContainer>
-              </StartPageContainer>
+                  <div>
+                    <Check
+                      id="check"
+                      onClick={() => setAcceptedTerms(!AcceptedTerms)}
+                      type="checkbox"
+                    />
+                    <Borderedlink>accept terms</Borderedlink>
+                  </div>
+
+                  <ButtonContainer>
+                    <PrimaryButton
+                      disabled={AcceptedTerms}
+                      onClick={handleJoin}
+                    >
+                      Join Collaboration
+                    </PrimaryButton>
+                  </ButtonContainer>
+                </StartPageContainer>
+              ) : BuyerLoggedIn ? (
+                <>
+                  <StartPageContainer>
+                    <Subheading>You want to ask for more quantity!</Subheading>
+                    <Input
+                      onChange={(e) => setAddedQuantity(e.target.value)}
+                      name="productQuantity "
+                      id="prdctqt"
+                      type="number"
+                      placeholder="Quantity (en Kg)"
+                      max={RequestedQT - availableQT}
+                    />
+                    <div>
+                      <Check
+                        id="check"
+                        onClick={() => setAcceptedTerms(!AcceptedTerms)}
+                        type="checkbox"
+                      />
+                      <Borderedlink>accept terms</Borderedlink>
+                    </div>
+
+                    <ButtonContainer>
+                      <PrimaryButton
+                        disabled={AcceptedTerms}
+                        onClick={IncreaseRequestedQuantity}
+                      >
+                        add
+                      </PrimaryButton>
+                    </ButtonContainer>
+                  </StartPageContainer>
+                </>
+              ) : (
+                <>
+                  <br></br>
+                  <PersonaliseContainer>
+
+                  <Personalised>want to join this collaboration ! <a href="/login" style={{color:"green", textDecorationLine:"underline"}}>login</a></Personalised> 
+                  </PersonaliseContainer>
+                </>
+              )}
             </div>
           </Bg>
           {Quantities.length > 0 && (
@@ -246,7 +339,8 @@ const CollaborationDetails = () => {
       ) : (
         <Subheading>
           {" "}
-          No one joined this collaboration yet please fill in the form to be the first one 
+          No one joined this collaboration yet please fill in the form to be the
+          first one
         </Subheading>
       )}
       <StyledModal

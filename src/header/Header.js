@@ -140,14 +140,14 @@ const AppHeader = ({
       {farmerloggedin ? (
         <>
           <NavLink to="/profile">
-            <ImgWrapper src="https://scontent.ftun2-2.fna.fbcdn.net/v/t39.30808-6/297860797_3378071792482285_6297438250722114348_n.png?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=mIzIKLXYMAsAX-hOjoB&_nc_ht=scontent.ftun2-2.fna&oh=00_AfBPkt3kjo8mmH5uN88TGxEHhCi3rPIZfc1sGZWYb9sdTQ&oe=646A756C" />
+            <ImgWrapper src="https://scontent.ftun16-1.fna.fbcdn.net/v/t39.30808-6/333035536_881579379771834_8206871795941422881_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=JLxG2JbK3igAX_-1pUs&_nc_ht=scontent.ftun16-1.fna&oh=00_AfClyt6yNuBev4RB8bQVeERnsN2u-FAmBXHbDsrS31c94g&oe=648EBB65" />
           </NavLink>
           <NavLink onClick={Logout}>Log Out</NavLink>
         </>
       ) : Buyerloggedin ? (
         <>
           <NavLink to="/profile">
-            <ImgWrapper src="https://scontent.ftun2-2.fna.fbcdn.net/v/t39.30808-6/297860797_3378071792482285_6297438250722114348_n.png?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=mIzIKLXYMAsAX-hOjoB&_nc_ht=scontent.ftun2-2.fna&oh=00_AfBPkt3kjo8mmH5uN88TGxEHhCi3rPIZfc1sGZWYb9sdTQ&oe=646A756C" />
+            <ImgWrapper src="https://scontent.ftun16-1.fna.fbcdn.net/v/t39.30808-6/333035536_881579379771834_8206871795941422881_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=JLxG2JbK3igAX_-1pUs&_nc_ht=scontent.ftun16-1.fna&oh=00_AfClyt6yNuBev4RB8bQVeERnsN2u-FAmBXHbDsrS31c94g&oe=648EBB65" />
           </NavLink>
           <NavLink onClick={Logoutbuyer}>Log Out</NavLink>
         </>

@@ -115,7 +115,7 @@ export default ({
               >
                 {testimonials.map((testimonial, index) => (
                   <ImageAndControlContainer key={index}>
-                    <Image imageSrc={imgs(testimonial.ProductType)} />
+                    <Image onClick={()=>window.location.href=`/collab/${testimonial._id}`} imageSrc={imgs(testimonial.ProductType)} />
                     <ControlContainer>
                       <ControlButton onClick={imageSliderRef?.slickPrev}>
                         <ChevronLeftIcon />
